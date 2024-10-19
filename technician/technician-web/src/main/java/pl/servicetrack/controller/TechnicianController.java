@@ -2,10 +2,13 @@ package pl.servicetrack.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.servicetrack.controller.model.FetchTechnicianResponse;
 import pl.servicetrack.facade.Technicians;
 import pl.servicetrack.controller.model.AddTechnicianRequest;
 import pl.servicetrack.controller.model.AddTechnicianResponse;
 import pl.servicetrack.model.Technician;
+
+import java.util.UUID;
 
 import static org.springframework.http.HttpStatus.*;
 
@@ -39,6 +42,23 @@ public class TechnicianController {
                                 response.phoneNumber()
                         )
                 )
+        );
+    }
+
+    @GetMapping("/technicians/{technician_id}")
+    ResponseEntity<?> fetchTechnician(@PathVariable("technician_id") UUID technicianId) {
+        if (technicianId == null || technicianId.toString().isBlank()) {
+            return ResponseEntity.status(BAD_REQUEST).build();
+        }
+        return technicians.fetchTechnician(technicianId).fold(
+                error -> ResponseEntity.status(CONFLICT).build(),
+                response -> ResponseEntity.status(OK).body(new FetchTechnicianResponse(
+                        response.id(),
+                        response.firstName(),
+                        response.lastName(),
+                        response.email(),
+                        response.phoneNumber()
+                ))
         );
     }
 }

@@ -10,4 +10,7 @@ public class TechnicianQuery {
 
     public static final String SAVE_TECHNICIAN = "INSERT INTO %s VALUES (?, ?, ?, ?, ?)"
             .formatted(TECHNICIAN_TABLE);
+
+    public static final String FETCH_TECHNICIAN = "SELECT * FROM %s WHERE %s = ?"
+            .formatted(TECHNICIAN_TABLE, ID_COLUMN);
 }

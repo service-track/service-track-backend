@@ -5,6 +5,8 @@ import pl.servicetrack.db.TechnicianDatabaseRepository;
 import pl.servicetrack.model.Technician;
 import pl.servicetrack.model.TechnicianModel;
 
+import java.util.UUID;
+
 public class Technicians {
     private final TechnicianDatabaseRepository technicianDatabaseRepository;
 
@@ -20,5 +22,16 @@ public class Technicians {
                 technician.email(),
                 technician.phoneNumber()
         )).map(response -> technician);
+    }
+
+    public Either<Error, Technician> fetchTechnician(UUID technicianId) {
+        return technicianDatabaseRepository.find(technicianId)
+                .map(response -> new Technician(
+                        response.id(),
+                        response.firstName(),
+                        response.lastName(),
+                        response.email(),
+                        response.phoneNumber()
+                ));
     }
 }

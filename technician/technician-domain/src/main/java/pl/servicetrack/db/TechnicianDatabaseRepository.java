@@ -7,11 +7,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import pl.servicetrack.model.TechnicianModel;
 
+import java.util.UUID;
+
 import static pl.servicetrack.db.TechnicianQuery.*;
 
 public class TechnicianDatabaseRepository {
     private final static String FAILED_TO_SAVE_TECHNICIAN = "Failed to save technician!";
     private final static String SUCCESSFULLY_SAVED_EMERGENCY = "Successfully save technician!";
+    private final static String FAILED_TO_FETCH_TECHNICIAN = "Failed to fetch technician!";
+    private final static String SUCCESSFULLY_FETCHED_TECHNICIAN = "Successfully fetched technician!";
+
     private final TechnicianMapper TECHNICIAN_MAPPER = new TechnicianMapper();
     private final JdbcTemplate jdbcTemplate;
     private final Logger LOGGER = LoggerFactory.getLogger(TechnicianDatabaseRepository.class);
@@ -32,5 +37,13 @@ public class TechnicianDatabaseRepository {
                 .toEither()
                 .mapLeft(error -> new Error(FAILED_TO_SAVE_TECHNICIAN, error))
                 .map(value -> technicianModel);
+    }
+
+    public Either<Error, TechnicianModel> find(UUID technicianId) {
+        return Try.of(() -> jdbcTemplate.queryForObject(FETCH_TECHNICIAN, TECHNICIAN_MAPPER, technicianId))
+                .onFailure(error -> LOGGER.warn(technicianId + "FAILED_TO_FETCH_TECHNICIAN QUERY"))
+                .onSuccess(success -> LOGGER.info(SUCCESSFULLY_FETCHED_TECHNICIAN))
+                .toEither()
+                .mapLeft(error -> new Error(FAILED_TO_FETCH_TECHNICIAN, error));
     }
 }
