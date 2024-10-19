@@ -16,7 +16,8 @@ public class TechnicianDatabaseRepository {
     private final static String SUCCESSFULLY_SAVED_EMERGENCY = "Successfully save technician!";
     private final static String FAILED_TO_FETCH_TECHNICIAN = "Failed to fetch technician!";
     private final static String SUCCESSFULLY_FETCHED_TECHNICIAN = "Successfully fetched technician!";
-
+    private final static String FAILED_TO_DELETE_TECHNICIAN = "Failed to delete technician!";
+    private final static String SUCCESSFULLY_DELETED_TECHNICIAN = "Successfully deleted technician!";
     private final TechnicianMapper TECHNICIAN_MAPPER = new TechnicianMapper();
     private final JdbcTemplate jdbcTemplate;
     private final Logger LOGGER = LoggerFactory.getLogger(TechnicianDatabaseRepository.class);
@@ -41,8 +42,16 @@ public class TechnicianDatabaseRepository {
 
     public Either<Error, TechnicianModel> find(UUID technicianId) {
         return Try.of(() -> jdbcTemplate.queryForObject(FETCH_TECHNICIAN, TECHNICIAN_MAPPER, technicianId))
-                .onFailure(error -> LOGGER.warn(technicianId + "FAILED_TO_FETCH_TECHNICIAN QUERY"))
+                .onFailure(error -> LOGGER.warn(FAILED_TO_FETCH_TECHNICIAN))
                 .onSuccess(success -> LOGGER.info(SUCCESSFULLY_FETCHED_TECHNICIAN))
+                .toEither()
+                .mapLeft(error -> new Error(FAILED_TO_FETCH_TECHNICIAN, error));
+    }
+
+    public Either<Error, Integer> delete(UUID technicianId) {
+        return Try.of(() -> jdbcTemplate.update(DELETE_TECHNICIAN, technicianId))
+                .onFailure(error -> LOGGER.warn(FAILED_TO_DELETE_TECHNICIAN))
+                .onSuccess(success -> LOGGER.info(SUCCESSFULLY_DELETED_TECHNICIAN))
                 .toEither()
                 .mapLeft(error -> new Error(FAILED_TO_FETCH_TECHNICIAN, error));
     }

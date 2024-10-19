@@ -61,4 +61,16 @@ public class TechnicianController {
                 ))
         );
     }
+
+    @DeleteMapping("/technicians/{technician_id}")
+    ResponseEntity<?> deleteTechnician(@PathVariable("technician_id") UUID technicianId) {
+        if (technicianId == null || technicianId.toString().isBlank()) {
+            return ResponseEntity.status(BAD_REQUEST).build();
+        }
+
+        return technicians.deleteTechnician(technicianId).fold(
+                error -> ResponseEntity.status(CONFLICT).build(),
+                response -> ResponseEntity.status(OK).build()
+        );
+    }
 }

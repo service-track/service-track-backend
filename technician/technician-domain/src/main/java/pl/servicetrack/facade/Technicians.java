@@ -34,4 +34,8 @@ public class Technicians {
                         response.phoneNumber()
                 ));
     }
+
+    public Either<Error, Integer> deleteTechnician(UUID technicianId) {
+        return technicianDatabaseRepository.delete(technicianId);
+    }
 }

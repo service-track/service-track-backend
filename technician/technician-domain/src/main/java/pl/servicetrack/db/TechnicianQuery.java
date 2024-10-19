@@ -13,4 +13,7 @@ public class TechnicianQuery {
 
     public static final String FETCH_TECHNICIAN = "SELECT * FROM %s WHERE %s = ?"
             .formatted(TECHNICIAN_TABLE, ID_COLUMN);
+
+    public static final String DELETE_TECHNICIAN = "DELETE FROM %s WHERE %s = ?"
+            .formatted(TECHNICIAN_TABLE, ID_COLUMN);
 }
