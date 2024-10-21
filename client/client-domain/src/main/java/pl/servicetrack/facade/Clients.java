@@ -2,8 +2,10 @@ package pl.servicetrack.facade;
 
 import io.vavr.control.Either;
 import pl.servicetrack.db.ClientDatabaseRepository;
-import pl.servicetrack.controller.model.Client;
-import pl.servicetrack.controller.model.ClientModel;
+import pl.servicetrack.model.Client;
+import pl.servicetrack.model.ClientModel;
+
+import java.util.UUID;
 
 public class Clients {
     private final ClientDatabaseRepository clientDatabaseRepository;
@@ -19,5 +21,15 @@ public class Clients {
                 client.email(),
                 client.phoneNumber()
         )).map(response -> client);
+    }
+
+    public Either<Error, Client> fetchClient(UUID clientId) {
+        return clientDatabaseRepository.find(clientId)
+                .map(response -> new Client(
+                        response.id(),
+                        response.name(),
+                        response.email(),
+                        response.phoneNumber()
+                ));
     }
 }
