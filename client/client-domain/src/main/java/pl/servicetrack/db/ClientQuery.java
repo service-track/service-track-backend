@@ -1,0 +1,13 @@
+package pl.servicetrack.db;
+
+public class ClientQuery {
+
+    private static final String CLIENTS_TABLE = "client_client";
+    private static final String ID_COLUMN = "id";
+    private static final String NAME_COLUMN = "name";
+    private static final String EMAIL = "email";
+    private static final String PHONE_NUMBER_COLUMN = "phone_number";
+
+    public static final String SAVE_CLIENT = "INSERT INTO %s VALUES (?, ?, ?, ?)"
+            .formatted(CLIENTS_TABLE);
+}

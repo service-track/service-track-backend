@@ -42,7 +42,6 @@
             <artifactId>spring-boot-starter-web</artifactId>
             <version>3.3.4</version>
         </dependency>
-
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
@@ -60,6 +59,16 @@
             <version>${liquibase.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>pl.servicetrack</groupId>
+            <artifactId>client-web</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>pl.servicetrack</groupId>
+            <artifactId>client-domain</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>pl.servicetrack</groupId>
             <artifactId>technician-web</artifactId>

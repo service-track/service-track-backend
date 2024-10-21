@@ -2,8 +2,8 @@ package pl.servicetrack.facade;
 
 import io.vavr.control.Either;
 import pl.servicetrack.db.TechnicianDatabaseRepository;
-import pl.servicetrack.model.Technician;
-import pl.servicetrack.model.TechnicianModel;
+import pl.servicetrack.controller.model.Technician;
+import pl.servicetrack.controller.model.TechnicianModel;
 
 import java.util.UUID;
 

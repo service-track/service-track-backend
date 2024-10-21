@@ -2,11 +2,11 @@ package pl.servicetrack.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.servicetrack.controller.model.FetchTechnicianResponse;
 import pl.servicetrack.facade.Technicians;
+import pl.servicetrack.controller.model.FetchTechnicianResponse;
 import pl.servicetrack.controller.model.AddTechnicianRequest;
 import pl.servicetrack.controller.model.AddTechnicianResponse;
-import pl.servicetrack.model.Technician;
+import pl.servicetrack.controller.model.Technician;
 
 import java.util.UUID;
 

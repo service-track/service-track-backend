@@ -4,10 +4,10 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<modules>
+		<module>main-web</module>
 		<module>serviceorder</module>
 		<module>technician</module>
 		<module>client</module>
-		<module>main-web</module>
 	</modules>
 
 	<groupId>pl.servicetrack</groupId>

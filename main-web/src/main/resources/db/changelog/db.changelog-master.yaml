@@ -1,3 +1,7 @@
 databaseChangeLog:
   - includeAll:
+      path: db/client/changelog
+
+  - includeAll:
       path: db/technician/changelog
+
