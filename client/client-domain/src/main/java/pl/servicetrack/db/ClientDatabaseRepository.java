@@ -17,6 +17,8 @@ public class ClientDatabaseRepository {
     private final String SUCCESSFULLY_SAVED_CLIENT = "Successfully saved client!";
     private final String FAILED_TO_FETCH_CLIENT = "Failed to fetch client!";
     private final String SUCCESSFULLY_FETCHED_CLIENT = "Successfully fetched client!";
+    private final String FAILED_TO_DELETE_CLIENT = "Failed to delete client!";
+    private final String SUCCESSFULLY_DELETED_CLIENT = "Successfully deleted client!";
     private final ClientMapper CLIENT_MAPPER = new ClientMapper();
     public final JdbcTemplate jdbcTemplate;
     public final Logger LOGGER = LoggerFactory.getLogger(ClientDatabaseRepository.class);
@@ -44,5 +46,13 @@ public class ClientDatabaseRepository {
                 .onSuccess(success -> LOGGER.info(SUCCESSFULLY_FETCHED_CLIENT))
                 .toEither()
                 .mapLeft(error -> new Error(FAILED_TO_FETCH_CLIENT, error));
+    }
+
+    public Either<Error, Integer> delete(UUID clientId) {
+        return Try.of(() -> jdbcTemplate.update(DELETE_CLIENT, clientId))
+                .onFailure(error -> LOGGER.warn(FAILED_TO_DELETE_CLIENT))
+                .onSuccess(success -> LOGGER.info(SUCCESSFULLY_DELETED_CLIENT))
+                .toEither()
+                .mapLeft(error -> new Error(FAILED_TO_DELETE_CLIENT, error));
     }
 }

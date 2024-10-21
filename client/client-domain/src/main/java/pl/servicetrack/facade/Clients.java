@@ -32,4 +32,8 @@ public class Clients {
                         response.phoneNumber()
                 ));
     }
+
+    public Either<Error, Integer> deleteClient(UUID clientId) {
+        return clientDatabaseRepository.delete(clientId);
+    }
 }

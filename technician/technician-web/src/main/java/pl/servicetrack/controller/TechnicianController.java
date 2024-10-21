@@ -3,9 +3,9 @@ package pl.servicetrack.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.servicetrack.facade.Technicians;
-import pl.servicetrack.model.FetchTechnicianResponse;
-import pl.servicetrack.model.AddTechnicianRequest;
-import pl.servicetrack.model.AddTechnicianResponse;
+import pl.servicetrack.controller.model.FetchTechnicianResponse;
+import pl.servicetrack.controller.model.AddTechnicianRequest;
+import pl.servicetrack.controller.model.AddTechnicianResponse;
 import pl.servicetrack.model.Technician;
 
 import java.util.UUID;
@@ -70,7 +70,7 @@ public class TechnicianController {
 
         return technicians.deleteTechnician(technicianId).fold(
                 error -> ResponseEntity.status(CONFLICT).build(),
-                response -> ResponseEntity.status(OK).build()
+                success -> ResponseEntity.status(OK).build()
         );
     }
 }

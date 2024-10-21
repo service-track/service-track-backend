@@ -1,4 +1,4 @@
-package pl.servicetrack.model;
+package pl.servicetrack.controller.model;
 
 import java.util.UUID;
 

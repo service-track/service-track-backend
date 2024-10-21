@@ -60,5 +60,15 @@ public class ClientController {
         );
     }
 
+    @DeleteMapping("/clients/{client_id}")
+    ResponseEntity<?> deleteClient(@PathVariable("client_id") UUID client_id) {
+        if (client_id == null || client_id.toString().isBlank()) {
+            return ResponseEntity.status(BAD_REQUEST).build();
+        }
 
+        return clients.deleteClient(client_id).fold(
+                error -> ResponseEntity.status(CONFLICT).build(),
+                success -> ResponseEntity.status(OK).build()
+        );
+    }
 }
