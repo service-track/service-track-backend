@@ -1,8 +1,8 @@
-package pl.servicetrack.model;
+package pl.servicetrack.etities;
 
 import java.util.UUID;
 
-public record TechnicianModel (UUID id,
+public record TechnicianEntity(UUID id,
                                String firstName,
                                String lastName,
                                String email,

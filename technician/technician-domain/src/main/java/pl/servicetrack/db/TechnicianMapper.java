@@ -1,16 +1,16 @@
 package pl.servicetrack.db;
 
 import org.springframework.jdbc.core.RowMapper;
-import pl.servicetrack.model.TechnicianModel;
+import pl.servicetrack.etities.TechnicianEntity;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
-public class TechnicianMapper implements RowMapper<TechnicianModel> {
+public class TechnicianMapper implements RowMapper<TechnicianEntity> {
     @Override
-    public TechnicianModel mapRow(ResultSet rs, int rowNum) throws SQLException {
-        return new TechnicianModel(
+    public TechnicianEntity mapRow(ResultSet rs, int rowNum) throws SQLException {
+        return new TechnicianEntity(
                 UUID.fromString(rs.getString(Fields.ID)),
                 rs.getString(Fields.FIRST_NAME),
                 rs.getString(Fields.LAST_NAME),

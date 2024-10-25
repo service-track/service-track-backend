@@ -2,6 +2,7 @@ package pl.servicetrack.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.servicetrack.controller.model.FetchTechniciansResponse;
 import pl.servicetrack.facade.Technicians;
 import pl.servicetrack.controller.model.FetchTechnicianResponse;
 import pl.servicetrack.controller.model.AddTechnicianRequest;
@@ -9,6 +10,7 @@ import pl.servicetrack.controller.model.AddTechnicianResponse;
 import pl.servicetrack.model.Technician;
 
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.*;
 
@@ -18,6 +20,22 @@ public class TechnicianController {
 
     public TechnicianController(Technicians technicians) {
         this.technicians = technicians;
+    }
+
+    @GetMapping("/technicians")
+    ResponseEntity<?> fetchTechnicians() {
+        return technicians.fetchTechnicians().fold(
+                error -> ResponseEntity.status(CONFLICT).build(),
+                response -> ResponseEntity.status(OK).body(new FetchTechniciansResponse(response.stream()
+                        .map(technician -> new FetchTechniciansResponse.Technician(
+                                technician.id(),
+                                technician.firstName(),
+                                technician.lastName(),
+                                technician.email(),
+                                technician.phoneNumber()
+                        )).collect(Collectors.toList()))
+                )
+        );
     }
 
     @PostMapping("/technicians")
