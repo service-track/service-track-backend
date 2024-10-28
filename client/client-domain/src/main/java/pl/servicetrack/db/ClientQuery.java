@@ -12,7 +12,8 @@ public class ClientQuery {
 
     public static final String SAVE_CLIENT = "INSERT INTO %s VALUES (?, ?, ?, ?)"
             .formatted(CLIENTS_TABLE);
-
+    public static final String FETCH_CLIENTS = "SELECT * FROM %s"
+            .formatted(CLIENTS_TABLE);
     public static final String FETCH_CLIENT = "SELECT * FROM %s WHERE %s = ?"
             .formatted(CLIENTS_TABLE, ID_COLUMN);
 

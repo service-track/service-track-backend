@@ -1,17 +1,17 @@
 package pl.servicetrack.db;
 
 import org.springframework.jdbc.core.RowMapper;
-import pl.servicetrack.model.ClientModel;
+import pl.servicetrack.model.ClientEntity;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
-public class ClientMapper implements RowMapper<ClientModel> {
+public class ClientMapper implements RowMapper<ClientEntity> {
 
     @Override
-    public ClientModel mapRow(ResultSet rs, int rowNum) throws SQLException {
-        return new ClientModel(
+    public ClientEntity mapRow(ResultSet rs, int rowNum) throws SQLException {
+        return new ClientEntity(
                 UUID.fromString(rs.getString(Fields.ID)),
                 rs.getString(Fields.NAME),
                 rs.getString(Fields.EMAIL),

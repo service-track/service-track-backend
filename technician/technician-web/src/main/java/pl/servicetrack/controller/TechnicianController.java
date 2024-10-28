@@ -1,5 +1,6 @@
 package pl.servicetrack.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.servicetrack.controller.model.AddTechnicianRequest;
@@ -30,18 +31,18 @@ public class TechnicianController {
     }
 
     @PostMapping("/technicians")
-    ResponseEntity<?> addTechnician(@RequestBody AddTechnicianRequest addTechnicianRequest) {
+    ResponseEntity<?> addTechnician(@Valid @RequestBody AddTechnicianRequest addTechnicianRequest) {
         if (addTechnicianRequest.isInvalid()) {
             return ResponseEntity.status(BAD_REQUEST).build();
         }
 
         return technicians.addTechnician(
-                technicianControllerMapper.addRequestBodyToTechnician(addTechnicianRequest))
-        .fold(
-                error -> ResponseEntity.status(CONFLICT).build(),
-                response -> ResponseEntity.status(CREATED).body(
-                        technicianControllerMapper.technicianToAddTechnicianResponse(response))
-        );
+                        technicianControllerMapper.addRequestBodyToTechnician(addTechnicianRequest))
+                .fold(
+                        error -> ResponseEntity.status(CONFLICT).build(),
+                        response -> ResponseEntity.status(CREATED).body(
+                                technicianControllerMapper.technicianToAddTechnicianResponse(response))
+                );
     }
 
     @GetMapping("/technicians/{technician_id}")

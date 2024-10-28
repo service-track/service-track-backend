@@ -1,12 +1,11 @@
 package pl.servicetrack.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.servicetrack.controller.model.FetchClientResponse;
-import pl.servicetrack.facade.Clients;
+import pl.servicetrack.controller.mapper.ClientControllerMapper;
 import pl.servicetrack.controller.model.AddClientRequest;
-import pl.servicetrack.controller.model.AddClientResponse;
-import pl.servicetrack.model.Client;
+import pl.servicetrack.facade.Clients;
 
 import java.util.UUID;
 
@@ -15,32 +14,35 @@ import static org.springframework.http.HttpStatus.*;
 @RestController
 public class ClientController {
     private final Clients clients;
+    private final ClientControllerMapper clientControllerMapper = ClientControllerMapper.INSTANCE;
 
     public ClientController(Clients clients) {
         this.clients = clients;
     }
 
+    @GetMapping("/clients")
+    ResponseEntity<?> fetchClients() {
+        return clients.fetchClients().fold(
+                error -> ResponseEntity.status(CONFLICT).build(),
+                response -> ResponseEntity.status(OK).body(
+                        clientControllerMapper.clientsToFetchClientsResponse(response)
+                )
+        );
+    }
     @PostMapping("/clients")
-    ResponseEntity<?> addClient(@RequestBody AddClientRequest addClientResponse) {
+    ResponseEntity<?> addClient(@Valid @RequestBody AddClientRequest addClientResponse) {
         if (addClientResponse.IsInvalid()) {
             return ResponseEntity.status(BAD_REQUEST).build();
         }
 
-        return clients.addClient(new Client(
-                addClientResponse.id(),
-                addClientResponse.name(),
-                addClientResponse.email(),
-                addClientResponse.phoneNumber()
-        )).fold(
-                error -> ResponseEntity.status(CONFLICT).build(),
-                response -> ResponseEntity.status(CREATED).body(new AddClientResponse(
-                                response.id(),
-                                response.name(),
-                                response.email(),
-                                response.phoneNumber()
+        return clients.addClient(
+                        clientControllerMapper.addRequestBodyToClient(addClientResponse))
+                .fold(
+                        error -> ResponseEntity.status(CONFLICT).build(),
+                        response -> ResponseEntity.status(CREATED).body(
+                                clientControllerMapper.clientToAddClientResponse(response)
                         )
-                )
-        );
+                );
     }
 
     @GetMapping("/clients/{client_id}")
@@ -51,12 +53,9 @@ public class ClientController {
 
         return clients.fetchClient(clientId).fold(
                 error -> ResponseEntity.status(CONFLICT).build(),
-                response -> ResponseEntity.status(OK).body(new FetchClientResponse(
-                        response.id(),
-                        response.name(),
-                        response.email(),
-                        response.phoneNumber()
-                ))
+                response -> ResponseEntity.status(OK).body(
+                        clientControllerMapper.clientToFetchClientResponse(response)
+                )
         );
     }
 

@@ -3,9 +3,11 @@ package pl.servicetrack.facade;
 import io.vavr.control.Either;
 import pl.servicetrack.db.ClientDatabaseRepository;
 import pl.servicetrack.model.Client;
-import pl.servicetrack.model.ClientModel;
+import pl.servicetrack.model.ClientEntity;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class Clients {
     private final ClientDatabaseRepository clientDatabaseRepository;
@@ -15,12 +17,23 @@ public class Clients {
     }
 
     public Either<Error, Client> addClient(Client client) {
-        return clientDatabaseRepository.save(new ClientModel(
+        return clientDatabaseRepository.save(new ClientEntity(
                 client.id(),
                 client.name(),
                 client.email(),
                 client.phoneNumber()
         )).map(response -> client);
+    }
+
+    public Either<Error, List<Client>> fetchClients() {
+        return clientDatabaseRepository.findAll()
+                .map(response -> response.stream().map(
+                        client -> new Client(
+                                client.id(),
+                                client.name(),
+                                client.email(),
+                                client.phoneNumber())
+                ).collect(Collectors.toList()));
     }
 
     public Either<Error, Client> fetchClient(UUID clientId) {
