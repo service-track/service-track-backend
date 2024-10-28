@@ -2,20 +2,17 @@ package pl.servicetrack.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.servicetrack.controller.model.FetchTechniciansResponse;
-import pl.servicetrack.facade.Technicians;
-import pl.servicetrack.controller.model.FetchTechnicianResponse;
 import pl.servicetrack.controller.model.AddTechnicianRequest;
-import pl.servicetrack.controller.model.AddTechnicianResponse;
-import pl.servicetrack.model.Technician;
+import pl.servicetrack.controller.mapper.TechnicianControllerMapper;
+import pl.servicetrack.facade.Technicians;
 
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.*;
 
 @RestController
 public class TechnicianController {
+    private final TechnicianControllerMapper technicianControllerMapper = TechnicianControllerMapper.INSTANCE;
     private final Technicians technicians;
 
     public TechnicianController(Technicians technicians) {
@@ -26,14 +23,8 @@ public class TechnicianController {
     ResponseEntity<?> fetchTechnicians() {
         return technicians.fetchTechnicians().fold(
                 error -> ResponseEntity.status(CONFLICT).build(),
-                response -> ResponseEntity.status(OK).body(new FetchTechniciansResponse(response.stream()
-                        .map(technician -> new FetchTechniciansResponse.Technician(
-                                technician.id(),
-                                technician.firstName(),
-                                technician.lastName(),
-                                technician.email(),
-                                technician.phoneNumber()
-                        )).collect(Collectors.toList()))
+                response -> ResponseEntity.status(OK).body(
+                        technicianControllerMapper.techniciansToFetchTechniciansResponse(response)
                 )
         );
     }
@@ -44,22 +35,12 @@ public class TechnicianController {
             return ResponseEntity.status(BAD_REQUEST).build();
         }
 
-        return technicians.addTechnician(new Technician(
-                addTechnicianRequest.id(),
-                addTechnicianRequest.firstName(),
-                addTechnicianRequest.lastName(),
-                addTechnicianRequest.email(),
-                addTechnicianRequest.phoneNumber()
-        )).fold(
+        return technicians.addTechnician(
+                technicianControllerMapper.addRequestBodyToTechnician(addTechnicianRequest))
+        .fold(
                 error -> ResponseEntity.status(CONFLICT).build(),
-                response -> ResponseEntity.status(CREATED).body(new AddTechnicianResponse(
-                                response.id(),
-                                response.firstName(),
-                                response.lastName(),
-                                response.email(),
-                                response.phoneNumber()
-                        )
-                )
+                response -> ResponseEntity.status(CREATED).body(
+                        technicianControllerMapper.technicianToAddTechnicianResponse(response))
         );
     }
 
@@ -70,13 +51,9 @@ public class TechnicianController {
         }
         return technicians.fetchTechnician(technicianId).fold(
                 error -> ResponseEntity.status(CONFLICT).build(),
-                response -> ResponseEntity.status(OK).body(new FetchTechnicianResponse(
-                        response.id(),
-                        response.firstName(),
-                        response.lastName(),
-                        response.email(),
-                        response.phoneNumber()
-                ))
+                response -> ResponseEntity.status(OK).body(
+                        technicianControllerMapper.technicianToFetchTechnicianResponse(response)
+                )
         );
     }
 
