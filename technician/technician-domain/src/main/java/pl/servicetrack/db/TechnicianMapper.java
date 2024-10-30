@@ -1,7 +1,7 @@
 package pl.servicetrack.db;
 
 import org.springframework.jdbc.core.RowMapper;
-import pl.servicetrack.etities.TechnicianEntity;
+import pl.servicetrack.entity.TechnicianEntity;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

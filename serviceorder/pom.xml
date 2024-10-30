@@ -14,8 +14,8 @@
     <artifactId>serviceorder</artifactId>
 
     <modules>
-        <module>serviceorder-domain</module>
         <module>serviceorder-web</module>
+        <module>serviceorder-domain</module>
     </modules>
 
 </project>

@@ -2,8 +2,8 @@ package pl.servicetrack.facade;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
+import pl.servicetrack.entity.ClientEntity;
 import pl.servicetrack.model.Client;
-import pl.servicetrack.model.ClientEntity;
 
 import java.util.List;
 

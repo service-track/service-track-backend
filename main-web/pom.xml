@@ -35,12 +35,17 @@
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jdbc</artifactId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>${spring-boot-starter-web.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-            <version>${spring-boot-starter-web.version}</version>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>${liquibase.version}</version>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
@@ -53,17 +58,7 @@
             <artifactId>postgresql</artifactId>
             <version>${postgresql.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.liquibase</groupId>
-            <artifactId>liquibase-core</artifactId>
-            <version>${liquibase.version}</version>
-        </dependency>
 
-        <dependency>
-            <groupId>pl.servicetrack</groupId>
-            <artifactId>client-web</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
         <dependency>
             <groupId>pl.servicetrack</groupId>
             <artifactId>client-domain</artifactId>
@@ -71,12 +66,29 @@
         </dependency>
         <dependency>
             <groupId>pl.servicetrack</groupId>
-            <artifactId>technician-web</artifactId>
+            <artifactId>client-web</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>pl.servicetrack</groupId>
+            <artifactId>technician-domain</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>pl.servicetrack</groupId>
-            <artifactId>technician-domain</artifactId>
+            <artifactId>technician-web</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>pl.servicetrack</groupId>
+            <artifactId>serviceorder-domain</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>pl.servicetrack</groupId>
+            <artifactId>serviceorder-web</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>

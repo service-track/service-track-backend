@@ -5,3 +5,6 @@ databaseChangeLog:
   - includeAll:
       path: db/technician/changelog
 
+  - includeAll:
+      path: db/serviceorder/changelog
+

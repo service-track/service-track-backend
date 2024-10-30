@@ -5,7 +5,7 @@ import io.vavr.control.Try;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
-import pl.servicetrack.etities.TechnicianEntity;
+import pl.servicetrack.entity.TechnicianEntity;
 
 import java.util.List;
 import java.util.UUID;

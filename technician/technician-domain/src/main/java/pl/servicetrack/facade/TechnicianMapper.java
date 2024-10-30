@@ -2,7 +2,7 @@ package pl.servicetrack.facade;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
-import pl.servicetrack.etities.TechnicianEntity;
+import pl.servicetrack.entity.TechnicianEntity;
 import pl.servicetrack.model.Technician;
 
 import java.util.List;
