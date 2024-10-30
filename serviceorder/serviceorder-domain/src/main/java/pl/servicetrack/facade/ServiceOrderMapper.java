@@ -10,4 +10,6 @@ public interface ServiceOrderMapper {
     ServiceOrderMapper INSTANCE = Mappers.getMapper(ServiceOrderMapper.class);
 
     ServiceOrderEntity serviceOrderToServiceOrderEntity(ServiceOrder serviceOrder);
+
+    ServiceOrder serviceOrderEntityToServiceOrder(ServiceOrderEntity serviceOrderEntity);
 }

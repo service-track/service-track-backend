@@ -45,8 +45,8 @@ public class ClientController {
                 );
     }
 
-    @GetMapping("/clients/{client_id}")
-    ResponseEntity<?> fetchClient(@PathVariable("client_id") UUID clientId) {
+    @GetMapping("/clients/{clientId}")
+    ResponseEntity<?> fetchClient(@PathVariable("clientId") UUID clientId) {
         if (clientId == null || clientId.toString().isBlank()) {
             return ResponseEntity.status(BAD_REQUEST).build();
         }
@@ -59,8 +59,8 @@ public class ClientController {
         );
     }
 
-    @DeleteMapping("/clients/{client_id}")
-    ResponseEntity<?> deleteClient(@PathVariable("client_id") UUID client_id) {
+    @DeleteMapping("/clients/{clientId}")
+    ResponseEntity<?> deleteClient(@PathVariable("clientId") UUID client_id) {
         if (client_id == null || client_id.toString().isBlank()) {
             return ResponseEntity.status(BAD_REQUEST).build();
         }

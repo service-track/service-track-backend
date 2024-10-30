@@ -10,8 +10,7 @@ import pl.servicetrack.model.CreateServiceOrderRequest;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import static org.springframework.http.HttpStatus.CONFLICT;
-import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
 public class ServiceOrderController {
@@ -34,6 +33,18 @@ public class ServiceOrderController {
                         error -> ResponseEntity.status(CONFLICT).build(),
                         response -> ResponseEntity.status(CREATED).body(
                                 serviceOrderControllerMapper.serviceOrderToCreateServiceOrderResponse(response)
-                        ));
+                        )
+                );
+    }
+
+    @GetMapping("/serviceorders/{serviceorderId}")
+    ResponseEntity<?> fetchServiceOrder(@PathVariable("serviceorderId") UUID serviceOrderId) {
+        return serviceOrders.fetchServiceOrder(serviceOrderId)
+                .fold(
+                        error -> ResponseEntity.status(CONFLICT).build(),
+                        response -> ResponseEntity.status(OK).body(
+                                serviceOrderControllerMapper.serviceOrderToFetchServiceOrderResponse(response)
+                        )
+                );
     }
 }

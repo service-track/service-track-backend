@@ -45,8 +45,8 @@ public class TechnicianController {
                 );
     }
 
-    @GetMapping("/technicians/{technician_id}")
-    ResponseEntity<?> fetchTechnician(@PathVariable("technician_id") UUID technicianId) {
+    @GetMapping("/technicians/{technicianId}")
+    ResponseEntity<?> fetchTechnician(@PathVariable("technicianId") UUID technicianId) {
         if (technicianId == null || technicianId.toString().isBlank()) {
             return ResponseEntity.status(BAD_REQUEST).build();
         }
@@ -58,8 +58,8 @@ public class TechnicianController {
         );
     }
 
-    @DeleteMapping("/technicians/{technician_id}")
-    ResponseEntity<?> deleteTechnician(@PathVariable("technician_id") UUID technicianId) {
+    @DeleteMapping("/technicians/{technicianId}")
+    ResponseEntity<?> deleteTechnician(@PathVariable("technicianId") UUID technicianId) {
         if (technicianId == null || technicianId.toString().isBlank()) {
             return ResponseEntity.status(BAD_REQUEST).build();
         }

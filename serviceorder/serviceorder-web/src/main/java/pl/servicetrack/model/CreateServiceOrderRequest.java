@@ -26,6 +26,7 @@ public record CreateServiceOrderRequest(
         @NotNull
         ServiceStatus status,
 
+        @NotNull
         LocalTime serviceDuration,
 
         @Size(max = 512)

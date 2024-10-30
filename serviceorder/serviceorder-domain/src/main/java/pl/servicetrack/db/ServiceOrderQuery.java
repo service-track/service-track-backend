@@ -16,4 +16,7 @@ public class ServiceOrderQuery {
 
     public static final String SAVE_SERVICEORDER = "INSERT INTO %s VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
             .formatted(SERVICEORDER_TABLE);
+
+    public static final String FETCH_SERVICEORDER = "SELECT * FROM %s WHERE %s = ?"
+            .formatted(SERVICEORDER_TABLE, ID_COLUMN);
 }

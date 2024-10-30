@@ -7,11 +7,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import pl.servicetrack.entity.ServiceOrderEntity;
 
+import java.util.UUID;
+
+import static org.springframework.dao.support.DataAccessUtils.singleResult;
 import static pl.servicetrack.db.ServiceOrderQuery.*;
 
 public class ServiceOrderDatabaseRepository {
     private final static String FAILED_TO_SAVE_SERVICEORDER = "Failed to save service order!";
     private final static String SUCCESSFULLY_SAVED_SERVICEORDER = "Successfully saved service order!";
+    private final static String FAILED_TO_FETCH_SERVICEORDER = "Failed to fetch service order!";
+    private final static String SUCCESSFULLY_FETCHED_SERVICEORDER = "Successfully fetched service order!";
     private final JdbcTemplate jdbcTemplate;
     private final ServiceOrderMapper SERVICEORDER_MAPPER = new ServiceOrderMapper();
     private final Logger LOGGER = LoggerFactory.getLogger(ServiceOrderDatabaseRepository.class);
@@ -37,5 +42,13 @@ public class ServiceOrderDatabaseRepository {
                 .toEither()
                 .map(value -> serviceOrderEntity)
                 .mapLeft(error -> new Error(FAILED_TO_SAVE_SERVICEORDER, error));
+    }
+
+    public Either<Error, ServiceOrderEntity> find(UUID serviceOrderId) {
+        return Try.of(() -> singleResult(jdbcTemplate.query(FETCH_SERVICEORDER, SERVICEORDER_MAPPER, serviceOrderId)))
+                .onFailure(error -> LOGGER.warn(FAILED_TO_FETCH_SERVICEORDER))
+                .onSuccess(success -> LOGGER.info(SUCCESSFULLY_FETCHED_SERVICEORDER))
+                .toEither()
+                .mapLeft(error -> new Error(FAILED_TO_FETCH_SERVICEORDER));
     }
 }

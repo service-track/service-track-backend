@@ -4,6 +4,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 import pl.servicetrack.model.CreateServiceOrderRequest;
 import pl.servicetrack.model.CreateServiceOrderResponse;
+import pl.servicetrack.model.FetchServiceOrderResponse;
 import pl.servicetrack.model.ServiceOrder;
 
 import java.time.LocalDateTime;
@@ -20,4 +21,6 @@ public interface ServiceOrderControllerMapper {
             LocalDateTime creationDateTime);
 
     CreateServiceOrderResponse serviceOrderToCreateServiceOrderResponse(ServiceOrder serviceOrder);
+
+    FetchServiceOrderResponse serviceOrderToFetchServiceOrderResponse(ServiceOrder serviceOrder);
 }
