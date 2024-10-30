@@ -8,7 +8,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class ServiceOrders {
-    private static final String FAILED_TO_FIND_SERVICEORDER = "Failed to find serviceOrder!";
+    private static final String SERVICEORDER_NOT_FOUND = "Service order hasn't been found!";
     private final ServiceOrderDatabaseRepository serviceOrderDatabaseRepository;
     private final ServiceOrderMapper serviceOrderMapper = ServiceOrderMapper.INSTANCE;
 
@@ -23,7 +23,12 @@ public class ServiceOrders {
 
     public Either<Error, ServiceOrder> fetchServiceOrder(UUID serviceOrderId) {
         return serviceOrderDatabaseRepository.find(serviceOrderId)
-                .filterOrElse(Objects::nonNull, error -> new Error(FAILED_TO_FIND_SERVICEORDER))
+                .filterOrElse(Objects::nonNull, error -> new Error(SERVICEORDER_NOT_FOUND))
                 .map(serviceOrderMapper::serviceOrderEntityToServiceOrder);
+    }
+
+    public Either<Error, Integer> deleteServiceOrder(UUID serviceOrderId) {
+        return serviceOrderDatabaseRepository.delete(serviceOrderId)
+                .filterOrElse(Objects::nonNull, error -> new Error(SERVICEORDER_NOT_FOUND));
     }
 }

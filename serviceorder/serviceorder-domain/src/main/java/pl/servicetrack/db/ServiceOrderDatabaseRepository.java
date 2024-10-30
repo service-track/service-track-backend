@@ -17,6 +17,8 @@ public class ServiceOrderDatabaseRepository {
     private final static String SUCCESSFULLY_SAVED_SERVICEORDER = "Successfully saved service order!";
     private final static String FAILED_TO_FETCH_SERVICEORDER = "Failed to fetch service order!";
     private final static String SUCCESSFULLY_FETCHED_SERVICEORDER = "Successfully fetched service order!";
+    private final static String FAILED_TO_DELETE_SERVICEORDER = "Failed to delete service order!";
+    private final static String SUCCESSFULLY_DELETED_SERVICEORDER = "Successfully deleted service order!";
     private final JdbcTemplate jdbcTemplate;
     private final ServiceOrderMapper SERVICEORDER_MAPPER = new ServiceOrderMapper();
     private final Logger LOGGER = LoggerFactory.getLogger(ServiceOrderDatabaseRepository.class);
@@ -50,5 +52,13 @@ public class ServiceOrderDatabaseRepository {
                 .onSuccess(success -> LOGGER.info(SUCCESSFULLY_FETCHED_SERVICEORDER))
                 .toEither()
                 .mapLeft(error -> new Error(FAILED_TO_FETCH_SERVICEORDER));
+    }
+
+    public Either<Error, Integer> delete(UUID serviceOrderId) {
+        return Try.of(() -> jdbcTemplate.update(DELETE_SERVICEORDER, serviceOrderId))
+                .onFailure(error -> LOGGER.warn(FAILED_TO_DELETE_SERVICEORDER))
+                .onSuccess(success -> LOGGER.info(SUCCESSFULLY_DELETED_SERVICEORDER))
+                .toEither()
+                .mapLeft(error -> new Error(FAILED_TO_DELETE_SERVICEORDER, error));
     }
 }

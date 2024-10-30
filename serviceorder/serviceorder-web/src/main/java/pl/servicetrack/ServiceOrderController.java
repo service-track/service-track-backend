@@ -37,14 +37,23 @@ public class ServiceOrderController {
                 );
     }
 
-    @GetMapping("/serviceorders/{serviceorderId}")
-    ResponseEntity<?> fetchServiceOrder(@PathVariable("serviceorderId") UUID serviceOrderId) {
+    @GetMapping("/serviceorders/{serviceOrderId}")
+    ResponseEntity<?> fetchServiceOrder(@PathVariable("serviceOrderId") UUID serviceOrderId) {
         return serviceOrders.fetchServiceOrder(serviceOrderId)
                 .fold(
                         error -> ResponseEntity.status(CONFLICT).build(),
                         response -> ResponseEntity.status(OK).body(
                                 serviceOrderControllerMapper.serviceOrderToFetchServiceOrderResponse(response)
                         )
+                );
+    }
+
+    @DeleteMapping("/serviceorders/{serviceOrderId}")
+    ResponseEntity<?> deleteServiceOrder(@PathVariable("serviceOrderId") UUID serviceOrderId) {
+        return serviceOrders.deleteServiceOrder(serviceOrderId)
+                .fold(
+                        error -> ResponseEntity.status(CONFLICT).build(),
+                        success -> ResponseEntity.status(OK).build()
                 );
     }
 }

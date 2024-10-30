@@ -19,4 +19,7 @@ public class ServiceOrderQuery {
 
     public static final String FETCH_SERVICEORDER = "SELECT * FROM %s WHERE %s = ?"
             .formatted(SERVICEORDER_TABLE, ID_COLUMN);
+
+    public static final String DELETE_SERVICEORDER = "DELETE FROM %s WHERE %s = ?"
+            .formatted(SERVICEORDER_TABLE, ID_COLUMN);
 }
