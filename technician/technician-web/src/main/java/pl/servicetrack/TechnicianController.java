@@ -32,10 +32,6 @@ public class TechnicianController {
 
     @PostMapping("/technicians")
     ResponseEntity<?> addTechnician(@Valid @RequestBody AddTechnicianRequest addTechnicianRequest) {
-        if (addTechnicianRequest.isInvalid()) {
-            return ResponseEntity.status(BAD_REQUEST).build();
-        }
-
         return technicians.addTechnician(
                         technicianControllerMapper.addRequestBodyToTechnician(addTechnicianRequest))
                 .fold(
@@ -47,9 +43,6 @@ public class TechnicianController {
 
     @GetMapping("/technicians/{technicianId}")
     ResponseEntity<?> fetchTechnician(@PathVariable("technicianId") UUID technicianId) {
-        if (technicianId == null || technicianId.toString().isBlank()) {
-            return ResponseEntity.status(BAD_REQUEST).build();
-        }
         return technicians.fetchTechnician(technicianId).fold(
                 error -> ResponseEntity.status(CONFLICT).build(),
                 response -> ResponseEntity.status(OK).body(
@@ -60,10 +53,6 @@ public class TechnicianController {
 
     @DeleteMapping("/technicians/{technicianId}")
     ResponseEntity<?> deleteTechnician(@PathVariable("technicianId") UUID technicianId) {
-        if (technicianId == null || technicianId.toString().isBlank()) {
-            return ResponseEntity.status(BAD_REQUEST).build();
-        }
-
         return technicians.deleteTechnician(technicianId).fold(
                 error -> ResponseEntity.status(CONFLICT).build(),
                 success -> ResponseEntity.status(OK).build()

@@ -21,6 +21,17 @@ public class ServiceOrderController {
         this.serviceOrders = serviceOrders;
     }
 
+    @GetMapping("/serviceorders")
+    ResponseEntity<?> fetchServiceOrders() {
+        return serviceOrders.fetchServiceOrders()
+                .fold(
+                        error -> ResponseEntity.status(CONFLICT).build(),
+                        response -> ResponseEntity.status(OK).body(
+                                serviceOrderControllerMapper.serviceOrdersToFetchServiceOrdersResponse(response)
+                        )
+                );
+    }
+
     @PostMapping("/serviceorders")
     ResponseEntity<?> createServiceOrder(@Valid @RequestBody CreateServiceOrderRequest createServiceOrderRequest) {
         return serviceOrders.createServiceOrder(

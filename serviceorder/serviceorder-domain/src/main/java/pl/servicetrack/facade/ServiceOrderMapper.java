@@ -5,6 +5,8 @@ import org.mapstruct.factory.Mappers;
 import pl.servicetrack.entity.ServiceOrderEntity;
 import pl.servicetrack.model.ServiceOrder;
 
+import java.util.List;
+
 @Mapper
 public interface ServiceOrderMapper {
     ServiceOrderMapper INSTANCE = Mappers.getMapper(ServiceOrderMapper.class);
@@ -12,4 +14,6 @@ public interface ServiceOrderMapper {
     ServiceOrderEntity serviceOrderToServiceOrderEntity(ServiceOrder serviceOrder);
 
     ServiceOrder serviceOrderEntityToServiceOrder(ServiceOrderEntity serviceOrderEntity);
+
+    List<ServiceOrder> serviceOrderEntitiesToServiceOrders(List<ServiceOrderEntity> serviceOrderEntities);
 }

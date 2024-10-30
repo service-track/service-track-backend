@@ -4,6 +4,7 @@ import io.vavr.control.Either;
 import pl.servicetrack.db.ServiceOrderDatabaseRepository;
 import pl.servicetrack.model.ServiceOrder;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -19,6 +20,11 @@ public class ServiceOrders {
     public Either<Error, ServiceOrder> createServiceOrder(ServiceOrder serviceOrder) {
         return serviceOrderDatabaseRepository.save(serviceOrderMapper.serviceOrderToServiceOrderEntity(serviceOrder))
                 .map(response -> serviceOrder);
+    }
+
+    public Either<Error, List<ServiceOrder>> fetchServiceOrders() {
+        return serviceOrderDatabaseRepository.findAll()
+                .map(serviceOrderMapper::serviceOrderEntitiesToServiceOrders);
     }
 
     public Either<Error, ServiceOrder> fetchServiceOrder(UUID serviceOrderId) {

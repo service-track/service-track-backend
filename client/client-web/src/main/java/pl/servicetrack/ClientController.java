@@ -29,14 +29,10 @@ public class ClientController {
                 )
         );
     }
+
     @PostMapping("/clients")
     ResponseEntity<?> addClient(@Valid @RequestBody AddClientRequest addClientResponse) {
-        if (addClientResponse.IsInvalid()) {
-            return ResponseEntity.status(BAD_REQUEST).build();
-        }
-
-        return clients.addClient(
-                        clientControllerMapper.addRequestBodyToClient(addClientResponse))
+        return clients.addClient(clientControllerMapper.addRequestBodyToClient(addClientResponse))
                 .fold(
                         error -> ResponseEntity.status(CONFLICT).build(),
                         response -> ResponseEntity.status(CREATED).body(
@@ -47,10 +43,6 @@ public class ClientController {
 
     @GetMapping("/clients/{clientId}")
     ResponseEntity<?> fetchClient(@PathVariable("clientId") UUID clientId) {
-        if (clientId == null || clientId.toString().isBlank()) {
-            return ResponseEntity.status(BAD_REQUEST).build();
-        }
-
         return clients.fetchClient(clientId).fold(
                 error -> ResponseEntity.status(CONFLICT).build(),
                 response -> ResponseEntity.status(OK).body(
@@ -61,10 +53,6 @@ public class ClientController {
 
     @DeleteMapping("/clients/{clientId}")
     ResponseEntity<?> deleteClient(@PathVariable("clientId") UUID client_id) {
-        if (client_id == null || client_id.toString().isBlank()) {
-            return ResponseEntity.status(BAD_REQUEST).build();
-        }
-
         return clients.deleteClient(client_id).fold(
                 error -> ResponseEntity.status(CONFLICT).build(),
                 success -> ResponseEntity.status(OK).build()
