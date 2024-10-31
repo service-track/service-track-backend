@@ -3,18 +3,19 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <packaging>pom</packaging>
+
     <parent>
         <groupId>pl.servicetrack</groupId>
-        <artifactId>servicetrack</artifactId>
+        <artifactId>servicetrack-backend</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>client</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>serviceorder</artifactId>
 
     <modules>
-        <module>client-web</module>
-        <module>client-domain</module>
+        <module>serviceorder-web</module>
+        <module>serviceorder-domain</module>
     </modules>
 
 </project>

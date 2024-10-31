@@ -11,11 +11,10 @@
 	</modules>
 
 	<groupId>pl.servicetrack</groupId>
-	<artifactId>servicetrack</artifactId>
+	<artifactId>servicetrack-backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<description>servicetrack</description>
 	<packaging>pom</packaging>
-	<name>servicetrack</name>
+	<name>servicetrack-backend</name>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
