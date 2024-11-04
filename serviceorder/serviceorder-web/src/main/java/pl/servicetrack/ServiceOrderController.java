@@ -12,6 +12,7 @@ import java.util.UUID;
 
 import static org.springframework.http.HttpStatus.*;
 
+@CrossOrigin("*")
 @RestController
 public class ServiceOrderController {
     private final ServiceOrderControllerMapper serviceOrderControllerMapper = ServiceOrderControllerMapper.INSTANCE;
