@@ -15,6 +15,7 @@
     <modules>
         <module>technician-web</module>
         <module>technician-domain</module>
+        <module>technician-repository</module>
     </modules>
 
 </project>

@@ -4,7 +4,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.servicetrack.model.AddTechnicianRequest;
-import pl.servicetrack.mapper.TechnicianControllerMapper;
+import pl.servicetrack.model.TechnicianControllerMapper;
 import pl.servicetrack.facade.Technicians;
 
 import java.util.UUID;
@@ -14,6 +14,7 @@ import static org.springframework.http.HttpStatus.*;
 @CrossOrigin("*")
 @RestController
 public class TechnicianController {
+
     private final TechnicianControllerMapper technicianControllerMapper = TechnicianControllerMapper.INSTANCE;
     private final Technicians technicians;
 
@@ -23,12 +24,13 @@ public class TechnicianController {
 
     @GetMapping("/technicians")
     ResponseEntity<?> fetchTechnicians() {
-        return technicians.fetchTechnicians().fold(
-                error -> ResponseEntity.status(CONFLICT).build(),
-                response -> ResponseEntity.status(OK).body(
-                        technicianControllerMapper.techniciansToFetchTechniciansResponse(response)
-                )
-        );
+        return technicians.fetchTechnicians()
+                .fold(
+                        TechnicianResponseSolver::resolveError,
+                        response -> ResponseEntity.status(OK).body(
+                                technicianControllerMapper.techniciansToFetchTechniciansResponse(response)
+                        )
+                );
     }
 
     @PostMapping("/technicians")
@@ -36,7 +38,7 @@ public class TechnicianController {
         return technicians.addTechnician(
                         technicianControllerMapper.addRequestBodyToTechnician(addTechnicianRequest))
                 .fold(
-                        error -> ResponseEntity.status(CONFLICT).build(),
+                        TechnicianResponseSolver::resolveError,
                         response -> ResponseEntity.status(CREATED).body(
                                 technicianControllerMapper.technicianToAddTechnicianResponse(response))
                 );
@@ -44,19 +46,21 @@ public class TechnicianController {
 
     @GetMapping("/technicians/{technicianId}")
     ResponseEntity<?> fetchTechnician(@PathVariable("technicianId") UUID technicianId) {
-        return technicians.fetchTechnician(technicianId).fold(
-                error -> ResponseEntity.status(CONFLICT).build(),
-                response -> ResponseEntity.status(OK).body(
-                        technicianControllerMapper.technicianToFetchTechnicianResponse(response)
-                )
-        );
+        return technicians.fetchTechnician(technicianId)
+                .fold(
+                        TechnicianResponseSolver::resolveError,
+                        response -> ResponseEntity.status(OK).body(
+                                technicianControllerMapper.technicianToFetchTechnicianResponse(response)
+                        )
+                );
     }
 
     @DeleteMapping("/technicians/{technicianId}")
     ResponseEntity<?> deleteTechnician(@PathVariable("technicianId") UUID technicianId) {
-        return technicians.deleteTechnician(technicianId).fold(
-                error -> ResponseEntity.status(CONFLICT).build(),
-                success -> ResponseEntity.status(OK).build()
-        );
+        return technicians.deleteTechnician(technicianId)
+                .fold(
+                        TechnicianResponseSolver::resolveError,
+                        response -> ResponseEntity.status(OK).build()
+                );
     }
 }

@@ -15,6 +15,7 @@
     <modules>
         <module>client-web</module>
         <module>client-domain</module>
+        <module>client-repository</module>
     </modules>
 
 </project>

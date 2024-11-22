@@ -8,7 +8,8 @@
 		<module>serviceorder</module>
 		<module>technician</module>
 		<module>client</module>
-	</modules>
+		<module>common</module>
+    </modules>
 
 	<groupId>pl.servicetrack</groupId>
 	<artifactId>servicetrack</artifactId>

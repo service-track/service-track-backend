@@ -66,6 +66,11 @@
         </dependency>
         <dependency>
             <groupId>pl.servicetrack</groupId>
+            <artifactId>client-repository</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>pl.servicetrack</groupId>
             <artifactId>client-web</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
@@ -77,6 +82,11 @@
         </dependency>
         <dependency>
             <groupId>pl.servicetrack</groupId>
+            <artifactId>technician-repository</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>pl.servicetrack</groupId>
             <artifactId>technician-web</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
@@ -84,6 +94,11 @@
         <dependency>
             <groupId>pl.servicetrack</groupId>
             <artifactId>serviceorder-domain</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>pl.servicetrack</groupId>
+            <artifactId>serviceorder-repository</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>

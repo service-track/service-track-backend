@@ -16,6 +16,7 @@
     <modules>
         <module>serviceorder-web</module>
         <module>serviceorder-domain</module>
+        <module>serviceorder-repository</module>
     </modules>
 
 </project>
