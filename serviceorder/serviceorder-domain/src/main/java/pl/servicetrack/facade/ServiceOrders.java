@@ -1,7 +1,9 @@
 package pl.servicetrack.facade;
 
 import io.vavr.control.Either;
-import pl.servicetrack.db.ServiceOrderDatabaseRepository;
+import pl.servicetrack.BaseError;
+import pl.servicetrack.db.ServiceOrderRepository;
+import pl.servicetrack.error.ServiceOrderDomainError;
 import pl.servicetrack.model.ServiceOrder;
 
 import java.util.List;
@@ -9,32 +11,33 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class ServiceOrders {
-    private static final String SERVICEORDER_NOT_FOUND = "Service order hasn't been found!";
-    private final ServiceOrderDatabaseRepository serviceOrderDatabaseRepository;
+
+    private final ServiceOrderRepository serviceOrderRepository;
     private final ServiceOrderMapper serviceOrderMapper = ServiceOrderMapper.INSTANCE;
 
-    public ServiceOrders(ServiceOrderDatabaseRepository serviceOrderDatabaseRepository) {
-        this.serviceOrderDatabaseRepository = serviceOrderDatabaseRepository;
+    public ServiceOrders(ServiceOrderRepository serviceOrderRepository) {
+        this.serviceOrderRepository = serviceOrderRepository;
     }
 
-    public Either<Error, ServiceOrder> createServiceOrder(ServiceOrder serviceOrder) {
-        return serviceOrderDatabaseRepository.save(serviceOrderMapper.serviceOrderToServiceOrderEntity(serviceOrder))
+    public Either<BaseError, ServiceOrder> createServiceOrder(ServiceOrder serviceOrder) {
+        return serviceOrderRepository.save(serviceOrderMapper.serviceOrderToServiceOrderEntity(serviceOrder))
                 .map(response -> serviceOrder);
     }
 
-    public Either<Error, List<ServiceOrder>> fetchServiceOrders() {
-        return serviceOrderDatabaseRepository.findAll()
+    public Either<BaseError, List<ServiceOrder>> fetchServiceOrders() {
+        return serviceOrderRepository.findAll()
                 .map(serviceOrderMapper::serviceOrderEntitiesToServiceOrders);
     }
 
-    public Either<Error, ServiceOrder> fetchServiceOrder(UUID serviceOrderId) {
-        return serviceOrderDatabaseRepository.find(serviceOrderId)
-                .filterOrElse(Objects::nonNull, error -> new Error(SERVICEORDER_NOT_FOUND))
+    public Either<BaseError, ServiceOrder> fetchServiceOrder(UUID serviceOrderId) {
+        return serviceOrderRepository.find(serviceOrderId)
+                .filterOrElse(
+                        Objects::nonNull,
+                        error -> new ServiceOrderDomainError.ServiceOrderNotFound())
                 .map(serviceOrderMapper::serviceOrderEntityToServiceOrder);
     }
 
-    public Either<Error, Integer> deleteServiceOrder(UUID serviceOrderId) {
-        return serviceOrderDatabaseRepository.delete(serviceOrderId)
-                .filterOrElse(Objects::nonNull, error -> new Error(SERVICEORDER_NOT_FOUND));
+    public Either<BaseError, UUID> deleteServiceOrder(UUID serviceOrderId) {
+        return serviceOrderRepository.delete(serviceOrderId);
     }
 }

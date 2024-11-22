@@ -4,7 +4,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.servicetrack.facade.ServiceOrders;
-import pl.servicetrack.mapper.ServiceOrderControllerMapper;
+import pl.servicetrack.model.ServiceOrderControllerMapper;
 import pl.servicetrack.model.CreateServiceOrderRequest;
 
 import java.time.LocalDateTime;
@@ -26,7 +26,7 @@ public class ServiceOrderController {
     ResponseEntity<?> fetchServiceOrders() {
         return serviceOrders.fetchServiceOrders()
                 .fold(
-                        error -> ResponseEntity.status(CONFLICT).build(),
+                        ServiceOrderResponseResolver::resolveError,
                         response -> ResponseEntity.status(OK).body(
                                 serviceOrderControllerMapper.serviceOrdersToFetchServiceOrdersResponse(response)
                         )
@@ -42,7 +42,7 @@ public class ServiceOrderController {
                                 UUID.randomUUID(),
                                 LocalDateTime.now()))
                 .fold(
-                        error -> ResponseEntity.status(CONFLICT).build(),
+                        ServiceOrderResponseResolver::resolveError,
                         response -> ResponseEntity.status(CREATED).body(
                                 serviceOrderControllerMapper.serviceOrderToCreateServiceOrderResponse(response)
                         )
@@ -53,7 +53,7 @@ public class ServiceOrderController {
     ResponseEntity<?> fetchServiceOrder(@PathVariable("serviceOrderId") UUID serviceOrderId) {
         return serviceOrders.fetchServiceOrder(serviceOrderId)
                 .fold(
-                        error -> ResponseEntity.status(CONFLICT).build(),
+                        ServiceOrderResponseResolver::resolveError,
                         response -> ResponseEntity.status(OK).body(
                                 serviceOrderControllerMapper.serviceOrderToFetchServiceOrderResponse(response)
                         )
@@ -64,7 +64,7 @@ public class ServiceOrderController {
     ResponseEntity<?> deleteServiceOrder(@PathVariable("serviceOrderId") UUID serviceOrderId) {
         return serviceOrders.deleteServiceOrder(serviceOrderId)
                 .fold(
-                        error -> ResponseEntity.status(CONFLICT).build(),
+                        ServiceOrderResponseResolver::resolveError,
                         success -> ResponseEntity.status(OK).build()
                 );
     }
