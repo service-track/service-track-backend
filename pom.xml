@@ -28,7 +28,7 @@
 		<java.version>17</java.version>
 		<spring-boot-starter-web.version>3.3.5</spring-boot-starter-web.version>
 		<spring-jdbc.version>6.1.14</spring-jdbc.version>
-		<spring-context.version>6.1.14</spring-context.version>
+		<spring-context.version>6.2.1</spring-context.version>
 		<spring-web.version>6.1.14</spring-web.version>
 		<spring-boot-starter-validation.version>3.3.5</spring-boot-starter-validation.version>
 		<org.mapstruct.version>1.6.2</org.mapstruct.version>
