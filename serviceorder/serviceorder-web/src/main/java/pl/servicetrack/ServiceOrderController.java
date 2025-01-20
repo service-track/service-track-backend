@@ -12,7 +12,6 @@ import java.util.UUID;
 
 import static org.springframework.http.HttpStatus.*;
 
-@CrossOrigin("*")
 @RestController
 public class ServiceOrderController {
     private final ServiceOrderControllerMapper serviceOrderControllerMapper = ServiceOrderControllerMapper.INSTANCE;
@@ -38,8 +37,6 @@ public class ServiceOrderController {
         return serviceOrders.createServiceOrder(
                         serviceOrderControllerMapper.createRequestBodyToServiceOrder(
                                 createServiceOrderRequest,
-                                UUID.randomUUID(),
-                                UUID.randomUUID(),
                                 LocalDateTime.now()))
                 .fold(
                         ServiceOrderResponseResolver::resolveError,

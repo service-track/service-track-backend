@@ -11,7 +11,6 @@ import java.util.UUID;
 
 import static org.springframework.http.HttpStatus.*;
 
-@CrossOrigin("*")
 @RestController
 public class ClientController {
     private final Clients clients;
