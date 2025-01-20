@@ -5,6 +5,8 @@ import pl.servicetrack.db.model.ServiceOrderEntity;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 public class ServiceOrderMapper implements RowMapper<ServiceOrderEntity> {

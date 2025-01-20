@@ -18,8 +18,6 @@ public interface ServiceOrderControllerMapper {
 
     ServiceOrder createRequestBodyToServiceOrder(
             CreateServiceOrderRequest createServiceOrderRequest,
-            UUID technicianId,
-            UUID clientId,
             LocalDateTime creationDateTime);
 
     CreateServiceOrderResponse serviceOrderToCreateServiceOrderResponse(ServiceOrder serviceOrder);
