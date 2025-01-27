@@ -13,20 +13,20 @@ import java.util.UUID;
 public class Technicians {
 
     private final TechnicianRepository technicianRepository;
-    private final TechnicianMapper technicianMapper = TechnicianMapper.INSTANCE;
+    private final TechnicianMapper TECHNICIANS_MAPPER = TechnicianMapper.INSTANCE;
 
     public Technicians(TechnicianRepository technicianRepository) {
         this.technicianRepository = technicianRepository;
     }
 
     public Either<BaseError, Technician> addTechnician(Technician technician) {
-        return technicianRepository.save(technicianMapper.technicianToTechnicianEntity(technician))
+        return technicianRepository.save(TECHNICIANS_MAPPER.technicianToTechnicianEntity(technician))
                 .map(response -> technician);
     }
 
     public Either<BaseError, List<Technician>> fetchTechnicians() {
         return technicianRepository.findAll()
-                .map(technicianMapper::technicianEntitiesToTechnicians);
+                .map(TECHNICIANS_MAPPER::technicianEntitiesToTechnicians);
     }
 
     public Either<BaseError, Technician> fetchTechnician(UUID technicianId) {
@@ -35,7 +35,7 @@ public class Technicians {
                         Objects::nonNull,
                         error -> new TechnicianDomainError.TechnicianNotFound()
                 )
-                .map(technicianMapper::technicianEntityToTechnician);
+                .map(TECHNICIANS_MAPPER::technicianEntityToTechnician);
     }
 
     public Either<BaseError, UUID> deleteTechnician(UUID technicianId) {

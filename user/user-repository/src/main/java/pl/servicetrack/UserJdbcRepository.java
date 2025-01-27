@@ -64,8 +64,8 @@ public class UserJdbcRepository implements UserRepository {
                 .mapLeft(error -> new UserError.FailedToFetchUserError());
     }
 
-    public UserEntity load(UUID userId) {
-        return singleResult(jdbcTemplate.query(FETCH_USER_BY_USER_ID, USER_MAPPER, userId));
+    public UserEntity load(String username) {
+        return singleResult(jdbcTemplate.query(FETCH_USER_BY_EMAIL, USER_MAPPER, username));
     }
 
     public Boolean exists(UUID userId) {

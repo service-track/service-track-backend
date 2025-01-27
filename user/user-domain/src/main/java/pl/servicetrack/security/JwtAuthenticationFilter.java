@@ -19,8 +19,8 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
-    private static final String AUTH_HEADER_TYPE = "Bearer ";
     private static final String AUTH_HEADER_NAME = "Authorization";
+    private static final String AUTH_HEADER_TYPE = "Bearer ";
     private static final Integer AUTH_HEADER_LENGTH = 7;
     private final UserDetailsService userDetailsService;
 
@@ -37,17 +37,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
         final String authHeader = request.getHeader(AUTH_HEADER_NAME);
         final String jwtToken;
-        final String userId;
+        final String userEmail;
 
         if (authHeader == null || !authHeader.startsWith(AUTH_HEADER_TYPE)) {
             filterChain.doFilter(request, response);
             return;
         }
         jwtToken = authHeader.substring(AUTH_HEADER_LENGTH);
-        userId = jwtService.extractUserId(jwtToken);
+        userEmail = jwtService.extractUsername(jwtToken);
 
-        if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetailsImpl userDetails = (UserDetailsImpl) this.userDetailsService.loadUserByUsername(userId);
+        if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UserDetailsImpl userDetails = (UserDetailsImpl) this.userDetailsService.loadUserByUsername(userEmail);
 
             if (jwtService.isTokenValid(jwtToken, userDetails)) {
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(

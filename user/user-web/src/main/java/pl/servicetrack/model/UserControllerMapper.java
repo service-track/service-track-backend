@@ -16,5 +16,7 @@ public interface UserControllerMapper {
 
     RegisterResponse userToRegisterResponse(User user);
 
+    FetchUserResponse userToFetchUserResponse(User user);
+
     LoginResponse tokenToAuthenticationResponse(String token);
 }
