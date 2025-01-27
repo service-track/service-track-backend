@@ -10,7 +10,9 @@ import pl.servicetrack.user.error.UserDomainError;
 import pl.servicetrack.user.model.User;
 import pl.servicetrack.security.JwtService;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 public class Users {
 
@@ -41,8 +43,30 @@ public class Users {
         return userRepository.findByEmail(email)
                 .filterOrElse(Objects::nonNull, error -> new UserDomainError.UserNotFound())
                 .map(user -> {
-                    authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.id(), password));
+                    authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.email(), password));
                     return jwtService.generateToken(USER_MAPPER.userEntityToUser(user));
                 });
+    }
+
+    public Either<BaseError, User> fetchUser(UUID userId) {
+        return userRepository.findByUserId(userId)
+                .filterOrElse(
+                        Objects::nonNull,
+                        error -> new UserDomainError.UserNotFound()
+                )
+                .map(USER_MAPPER::userEntityToUser);
+    }
+
+    public Either<BaseError, User> fetchUserByEmail(String email) {
+        return userRepository.findByEmail(email).map(userEntity -> new User(
+                userEntity.id(),
+                userEntity.firstName(),
+                userEntity.lastName(),
+                userEntity.password(),
+                userEntity.email(),
+                userEntity.phoneNumber(),
+                User.Role.valueOf(userEntity.role().toString()),
+                userEntity.createdAt())
+        );
     }
 }

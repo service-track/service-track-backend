@@ -15,7 +15,7 @@ public interface UserRepository {
 
     Either<BaseError, UserEntity> findByUserId(UUID userId);
 
-    UserEntity load(UUID userId);
+    UserEntity load(String username);
 
     Boolean exists(UUID userId);
 }

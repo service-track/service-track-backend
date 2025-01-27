@@ -3,10 +3,7 @@ package pl.servicetrack;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.servicetrack.model.LoginRequest;
 import pl.servicetrack.model.RegisterRequest;
 import pl.servicetrack.model.UserControllerMapper;
@@ -14,10 +11,11 @@ import pl.servicetrack.security.JwtService;
 import pl.servicetrack.user.facade.Users;
 import pl.servicetrack.user.model.User;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
 public class UserController {
@@ -63,4 +61,28 @@ public class UserController {
                         )
                 );
     }
+
+    @GetMapping("/users/{userId}")
+    ResponseEntity<?> fetchUser(@PathVariable("userId") UUID userId) {
+        return users.fetchUser(userId)
+                .fold(
+                        UserResponseSolver::resolveError,
+                        response -> ResponseEntity.status(OK).body(
+                                userControllerMapper.userToFetchUserResponse(response)
+                        )
+                );
+    }
+
+    @GetMapping("/users/me")
+    public ResponseEntity<?> fetchLoggedUser(Principal principal) {
+        return users.fetchUserByEmail(principal.getName())
+                .fold(
+                        UserResponseSolver::resolveError,
+                        response -> ResponseEntity.status(OK).body(
+                                userControllerMapper.userToFetchUserResponse(response)
+                        )
+                );
+    }
+
+
 }

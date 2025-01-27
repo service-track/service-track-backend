@@ -1,4 +1,4 @@
-package pl.servicetrack.user.db.model;
+package pl.servicetrack.security.model;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
