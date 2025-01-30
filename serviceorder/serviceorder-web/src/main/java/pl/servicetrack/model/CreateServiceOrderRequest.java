@@ -11,6 +11,12 @@ public record CreateServiceOrderRequest(
         UUID id,
 
         @NotNull
+        UUID technicianId,
+
+        @NotNull
+        UUID clientId,
+
+        @NotNull
         ServiceType serviceType,
 
         @NotNull
@@ -26,7 +32,6 @@ public record CreateServiceOrderRequest(
         @NotNull
         ServiceStatus status,
 
-        @NotNull
         LocalTime serviceDuration,
 
         @Size(max = 512)
