@@ -12,6 +12,11 @@ import java.util.UUID;
 public class ServiceOrderMapper implements RowMapper<ServiceOrderEntity> {
     @Override
     public ServiceOrderEntity mapRow(ResultSet rs, int numRow) throws SQLException {
+        LocalTime serviceDuration = null;
+        if (rs.getTime(Fields.SERVICE_DURATION) != null) {
+            serviceDuration = rs.getTime(Fields.SERVICE_DURATION).toLocalTime();
+        }
+
         return new ServiceOrderEntity(
                 UUID.fromString(rs.getString(Fields.ID)),
                 UUID.fromString(rs.getString(Fields.TECHNICIAN_ID)),
@@ -21,7 +26,7 @@ public class ServiceOrderMapper implements RowMapper<ServiceOrderEntity> {
                 rs.getString(Fields.SERVICE_DESCRIPTION),
                 rs.getTimestamp(Fields.DATETIME_OF_SERVICE).toLocalDateTime(),
                 ServiceOrderEntity.ServiceStatus.valueOf(rs.getString(Fields.STATUS)),
-                rs.getTime(Fields.SERVICE_DURATION).toLocalTime(),
+                serviceDuration,
                 rs.getString(Fields.COMMENT),
                 rs.getTimestamp(Fields.CREATION_DATETIME).toLocalDateTime()
         );

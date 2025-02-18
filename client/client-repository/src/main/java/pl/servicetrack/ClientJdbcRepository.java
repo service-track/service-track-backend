@@ -32,14 +32,7 @@ public class ClientJdbcRepository implements ClientRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public Either<BaseError, ClientEntity> save(ClientEntity clientEntity) {
-        return attemptSave(clientEntity)
-                .onFailure(error -> LOGGER.warn(FAILED_TO_SAVE_CLIENT, error))
-                .onSuccess(success -> LOGGER.info(SUCCESSFULLY_SAVED_CLIENT))
-                .toEither()
-                .map(value -> clientEntity)
-                .mapLeft(error -> new ClientError.FailedToSaveClientError());
-    }
+
 
     private Try<Integer> attemptSave(ClientEntity clientEntity) {
         return Try.of(() -> jdbcTemplate.update(SAVE_CLIENT,
@@ -48,6 +41,15 @@ public class ClientJdbcRepository implements ClientRepository {
                 clientEntity.email(),
                 clientEntity.phoneNumber()
         ));
+    }
+
+    public Either<BaseError, ClientEntity> save(ClientEntity clientEntity) {
+        return attemptSave(clientEntity)
+                .onFailure(error -> LOGGER.warn(FAILED_TO_SAVE_CLIENT, error))
+                .onSuccess(success -> LOGGER.info(SUCCESSFULLY_SAVED_CLIENT))
+                .toEither()
+                .map(value -> clientEntity)
+                .mapLeft(error -> new ClientError.FailedToSaveClientError());
     }
 
     public Either<BaseError, List<ClientEntity>> findAll() {
