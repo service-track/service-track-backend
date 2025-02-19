@@ -68,8 +68,8 @@ public class UserJdbcRepository implements UserRepository {
         return singleResult(jdbcTemplate.query(FETCH_USER_BY_EMAIL, USER_MAPPER, username));
     }
 
-    public Boolean exists(UUID userId) {
-        return !jdbcTemplate.query(FETCH_USER_BY_USER_ID, USER_MAPPER, userId).isEmpty();
+    public Boolean exists(String userEmail) {
+        return !jdbcTemplate.query(FETCH_USER_BY_EMAIL, USER_MAPPER, userEmail).isEmpty();
     }
 
 }

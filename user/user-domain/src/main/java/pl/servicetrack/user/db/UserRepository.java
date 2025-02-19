@@ -17,5 +17,5 @@ public interface UserRepository {
 
     UserEntity load(String username);
 
-    Boolean exists(UUID userId);
+    Boolean exists(String userEmail);
 }

@@ -26,7 +26,7 @@ public class Users {
     }
 
     public Either<BaseError, User> register(User user) {
-        if (userRepository.exists(user.id())) {
+        if (userRepository.exists(user.email())) {
             return Either.left(new UserDomainError.UserAlreadyExists());
         }
 
