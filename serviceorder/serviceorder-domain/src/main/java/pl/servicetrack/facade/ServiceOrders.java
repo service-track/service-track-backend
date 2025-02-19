@@ -24,6 +24,11 @@ public class ServiceOrders {
                 .map(response -> serviceOrder);
     }
 
+    public Either<BaseError, ServiceOrder> updateServiceOrder(ServiceOrder serviceOrder) {
+        return serviceOrderRepository.update(serviceOrderMapper.serviceOrderToServiceOrderEntity(serviceOrder))
+                .map(response -> serviceOrder);
+    }
+
     public Either<BaseError, List<ServiceOrder>> fetchServiceOrders() {
         return serviceOrderRepository.findAll()
                 .map(serviceOrderMapper::serviceOrderEntitiesToServiceOrders);

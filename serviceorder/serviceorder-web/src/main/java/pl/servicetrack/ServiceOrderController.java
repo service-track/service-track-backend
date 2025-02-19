@@ -6,7 +6,9 @@ import org.springframework.web.bind.annotation.*;
 import pl.servicetrack.facade.ServiceOrders;
 import pl.servicetrack.model.ServiceOrderControllerMapper;
 import pl.servicetrack.model.CreateServiceOrderRequest;
+import pl.servicetrack.model.UpdateServiceOrderRequest;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -43,6 +45,19 @@ public class ServiceOrderController {
                         response -> ResponseEntity.status(CREATED).body(
                                 serviceOrderControllerMapper.serviceOrderToCreateServiceOrderResponse(response)
                         )
+                );
+    }
+
+    @PutMapping("/serviceorders/{serviceOrderId}")
+    ResponseEntity<?> createServiceOrder(@Valid @RequestBody UpdateServiceOrderRequest updateServiceOrderRequest,
+                                         @PathVariable("serviceOrderId") UUID serviceOrderId) {
+        return serviceOrders.updateServiceOrder(
+                        serviceOrderControllerMapper.updateRequestBodyToServiceOrder(
+                                updateServiceOrderRequest,
+                                serviceOrderId))
+                .fold(
+                        ServiceOrderResponseResolver::resolveError,
+                        success -> ResponseEntity.status(OK).build()
                 );
     }
 
