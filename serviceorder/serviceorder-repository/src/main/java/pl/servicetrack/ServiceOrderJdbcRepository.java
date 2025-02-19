@@ -19,6 +19,8 @@ public class ServiceOrderJdbcRepository implements ServiceOrderRepository {
 
     private final static String FAILED_TO_SAVE_SERVICEORDER = "Failed to save service order!";
     private final static String SUCCESSFULLY_SAVED_SERVICEORDER = "Successfully saved service order!";
+    private final static String FAILED_TO_UPDATE_SERVICEORDER = "Failed to update service order!";
+    private final static String SUCCESSFULLY_UPDATED_SERVICEORDER = "Successfully updated service order!";
     private final static String FAILED_TO_FETCH_SERVICEORDERS = "Failed to fetch service orders!";
     private final static String SUCCESSFULLY_FETCHED_SERVICEORDERS = "Successfully fetched service orders!";
     private final static String FAILED_TO_FETCH_SERVICEORDER = "Failed to fetch service order!";
@@ -37,6 +39,15 @@ public class ServiceOrderJdbcRepository implements ServiceOrderRepository {
         return attemptSave(serviceOrderEntity)
                 .onFailure(error -> LOGGER.warn(FAILED_TO_SAVE_SERVICEORDER, error))
                 .onSuccess(success -> LOGGER.info(SUCCESSFULLY_SAVED_SERVICEORDER))
+                .toEither()
+                .map(value -> serviceOrderEntity)
+                .mapLeft(error -> new ServiceOrderError.FailedToSaveServiceOrderError());
+    }
+
+    public Either<BaseError, ServiceOrderEntity> update(ServiceOrderEntity serviceOrderEntity) {
+        return attemptUpdate(serviceOrderEntity)
+                .onFailure(error -> LOGGER.warn(FAILED_TO_UPDATE_SERVICEORDER, error))
+                .onSuccess(success -> LOGGER.info(SUCCESSFULLY_UPDATED_SERVICEORDER))
                 .toEither()
                 .map(value -> serviceOrderEntity)
                 .mapLeft(error -> new ServiceOrderError.FailedToSaveServiceOrderError());
@@ -80,6 +91,21 @@ public class ServiceOrderJdbcRepository implements ServiceOrderRepository {
                 serviceOrderEntity.serviceDuration(),
                 serviceOrderEntity.comment(),
                 serviceOrderEntity.creationDateTime()
+        ));
+    }
+
+    private Try<Integer> attemptUpdate(ServiceOrderEntity serviceOrderEntity) {
+        return Try.of(() -> jdbcTemplate.update(UPDATE_SERVICEORDER,
+                serviceOrderEntity.technicianId(),
+                serviceOrderEntity.clientId(),
+                serviceOrderEntity.serviceType().name(),
+                serviceOrderEntity.serviceFormat().name(),
+                serviceOrderEntity.serviceDescription(),
+                serviceOrderEntity.dateTimeOfService(),
+                serviceOrderEntity.status().name(),
+                serviceOrderEntity.serviceDuration(),
+                serviceOrderEntity.comment(),
+                serviceOrderEntity.id()
         ));
     }
 }

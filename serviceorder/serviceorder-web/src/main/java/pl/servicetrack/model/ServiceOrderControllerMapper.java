@@ -20,6 +20,8 @@ public interface ServiceOrderControllerMapper {
             CreateServiceOrderRequest createServiceOrderRequest,
             LocalDateTime creationDateTime);
 
+    ServiceOrder updateRequestBodyToServiceOrder(UpdateServiceOrderRequest updateServiceOrderRequest, UUID id);
+
     CreateServiceOrderResponse serviceOrderToCreateServiceOrderResponse(ServiceOrder serviceOrder);
 
     default FetchServiceOrdersResponse serviceOrdersToFetchServiceOrdersResponse(List<ServiceOrder> serviceOrders) {
