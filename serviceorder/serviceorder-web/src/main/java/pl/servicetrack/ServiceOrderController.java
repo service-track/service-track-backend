@@ -49,7 +49,7 @@ public class ServiceOrderController {
     }
 
     @PutMapping("/serviceorders/{serviceOrderId}")
-    ResponseEntity<?> createServiceOrder(@Valid @RequestBody UpdateServiceOrderRequest updateServiceOrderRequest,
+    ResponseEntity<?> updateServiceOrder(@Valid @RequestBody UpdateServiceOrderRequest updateServiceOrderRequest,
                                          @PathVariable("serviceOrderId") UUID serviceOrderId) {
         return serviceOrders.updateServiceOrder(
                         serviceOrderControllerMapper.updateRequestBodyToServiceOrder(
