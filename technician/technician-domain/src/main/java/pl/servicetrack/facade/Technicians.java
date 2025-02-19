@@ -24,6 +24,11 @@ public class Technicians {
                 .map(response -> technician);
     }
 
+    public Either<BaseError, Technician> updateTechnician(Technician technician) {
+        return technicianRepository.update(TECHNICIANS_MAPPER.technicianToTechnicianEntity(technician))
+                .map(response -> technician);
+    }
+
     public Either<BaseError, List<Technician>> fetchTechnicians() {
         return technicianRepository.findAll()
                 .map(TECHNICIANS_MAPPER::technicianEntitiesToTechnicians);

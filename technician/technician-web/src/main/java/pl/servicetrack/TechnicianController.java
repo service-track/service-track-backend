@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.servicetrack.model.AddTechnicianRequest;
 import pl.servicetrack.model.TechnicianControllerMapper;
 import pl.servicetrack.facade.Technicians;
+import pl.servicetrack.model.UpdateTechnicianRequest;
 
 import java.util.UUID;
 
@@ -40,6 +41,19 @@ public class TechnicianController {
                         TechnicianResponseSolver::resolveError,
                         response -> ResponseEntity.status(CREATED).body(
                                 technicianControllerMapper.technicianToAddTechnicianResponse(response))
+                );
+    }
+
+    @PutMapping("/technicians/{technicianId}")
+    ResponseEntity<?> updateTechnician(@Valid @RequestBody UpdateTechnicianRequest updateTechnicianRequest,
+                                         @PathVariable("technicianId") UUID technicianId) {
+        return technicians.updateTechnician(
+                        technicianControllerMapper.updateRequestBodyToTechnician(
+                                updateTechnicianRequest,
+                                technicianId))
+                .fold(
+                        TechnicianResponseSolver::resolveError,
+                        success -> ResponseEntity.status(OK).build()
                 );
     }
 

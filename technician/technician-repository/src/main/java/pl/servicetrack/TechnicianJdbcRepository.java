@@ -17,7 +17,9 @@ import static pl.servicetrack.TechnicianQuery.*;
 public class TechnicianJdbcRepository implements TechnicianRepository {
 
     private final static String FAILED_TO_SAVE_TECHNICIAN = "Failed to save technician!";
-    private final static String SUCCESSFULLY_SAVED_EMERGENCY = "Successfully save technician!";
+    private final static String SUCCESSFULLY_SAVED_TECHNICIAN = "Successfully saved technician!";
+    private final static String FAILED_TO_UPDATE_TECHNICIAN = "Failed to update technician!";
+    private final static String SUCCESSFULLY_UPDATED_TECHNICIAN = "Successfully updated technician!";
     private final static String FAILED_TO_FETCH_TECHNICIANS = "Failed to fetch technicians!";
     private final static String SUCCESSFULLY_FETCHED_TECHNICIANS = "Successfully fetched technicians!";
     private final static String FAILED_TO_FETCH_TECHNICIAN = "Failed to fetch technician!";
@@ -35,20 +37,19 @@ public class TechnicianJdbcRepository implements TechnicianRepository {
     public Either<BaseError, TechnicianEntity> save(TechnicianEntity technicianEntity) {
         return attemptSave(technicianEntity)
                 .onFailure(error -> LOGGER.warn(FAILED_TO_SAVE_TECHNICIAN, error))
-                .onSuccess(success -> LOGGER.info(SUCCESSFULLY_SAVED_EMERGENCY))
+                .onSuccess(success -> LOGGER.info(SUCCESSFULLY_SAVED_TECHNICIAN))
                 .toEither()
                 .map(value -> technicianEntity)
                 .mapLeft(error -> new TechnicianError.FailedtoSaveTechnicianError());
     }
 
-    private Try<Integer> attemptSave(TechnicianEntity technicianEntity) {
-        return Try.of(() -> jdbcTemplate.update(SAVE_TECHNICIAN,
-                technicianEntity.id(),
-                technicianEntity.firstName(),
-                technicianEntity.lastName(),
-                technicianEntity.email(),
-                technicianEntity.phoneNumber()
-        ));
+    public Either<BaseError, TechnicianEntity> update(TechnicianEntity technicianEntity) {
+        return attemptUpdate(technicianEntity)
+                .onFailure(error -> LOGGER.warn(FAILED_TO_UPDATE_TECHNICIAN, error))
+                .onSuccess(success -> LOGGER.info(SUCCESSFULLY_UPDATED_TECHNICIAN))
+                .toEither()
+                .map(value -> technicianEntity)
+                .mapLeft(error -> new TechnicianError.FailedtoSaveTechnicianError());
     }
 
     public Either<BaseError, List<TechnicianEntity>> findAll() {
@@ -74,5 +75,25 @@ public class TechnicianJdbcRepository implements TechnicianRepository {
                 .toEither()
                 .map(value -> technicianId)
                 .mapLeft(error -> new TechnicianError.FailedToDeleteTechnicianError());
+    }
+
+    private Try<Integer> attemptSave(TechnicianEntity technicianEntity) {
+        return Try.of(() -> jdbcTemplate.update(SAVE_TECHNICIAN,
+                technicianEntity.id(),
+                technicianEntity.firstName(),
+                technicianEntity.lastName(),
+                technicianEntity.email(),
+                technicianEntity.phoneNumber()
+        ));
+    }
+
+    private Try<Integer> attemptUpdate(TechnicianEntity technicianEntity) {
+        return Try.of(() -> jdbcTemplate.update(UPDATE_TECHNICIAN,
+                technicianEntity.firstName(),
+                technicianEntity.lastName(),
+                technicianEntity.email(),
+                technicianEntity.phoneNumber(),
+                technicianEntity.id()
+        ));
     }
 }
