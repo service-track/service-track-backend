@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 01_admin
+      id: 03_new_admin
       author: Wikcis
       changes:
         - insert:

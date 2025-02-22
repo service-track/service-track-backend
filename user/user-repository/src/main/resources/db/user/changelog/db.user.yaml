@@ -4,3 +4,6 @@ databaseChangeLog:
 
   - include:
       file: db/user/migration/01_admin.yaml
+
+  - include:
+      file: db/user/migration/03_new_admin.yaml
