@@ -19,6 +19,8 @@ public class UserJdbcRepository implements UserRepository {
 
     private final static String FAILED_TO_SAVE_USER = "Failed to save user!";
     private final static String SUCCESSFULLY_SAVED_USER = "Successfully saved user!";
+    private final static String FAILED_TO_UPDATE_USER = "Failed to update user!";
+    private final static String SUCCESSFULLY_UPDATED_USER = "Successfully updated user!";
     private final static String FAILED_TO_FETCH_USER = "Failed to fetch user!";
     private final static String SUCCESSFULLY_FETCHED_USER = "Successfully fetched user!";
     private final JdbcTemplate jdbcTemplate;
@@ -29,7 +31,6 @@ public class UserJdbcRepository implements UserRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    @Override
     public Either<BaseError, UserEntity> save(UserEntity userEntity, PasswordEncoder passwordEncoder) {
         return Try.of(() -> jdbcTemplate.update(SAVE_USER,
                         userEntity.id(),
@@ -46,6 +47,22 @@ public class UserJdbcRepository implements UserRepository {
                 .map(value -> userEntity)
                 .mapLeft(error -> new UserError.FailedToSaveToDatabaseError());
     }
+
+    public Either<BaseError, UserEntity> update(UserEntity userEntity, PasswordEncoder passwordEncoder) {
+        return Try.of(() -> jdbcTemplate.update(UPDATE_USER,
+                        userEntity.firstName(),
+                        userEntity.lastName(),
+                        passwordEncoder.encode(userEntity.password()),
+                        userEntity.email(),
+                        userEntity.phoneNumber(),
+                        userEntity.id()
+                )).onFailure(error -> LOGGER.warn(FAILED_TO_UPDATE_USER, error))
+                .onSuccess(success -> LOGGER.info(SUCCESSFULLY_UPDATED_USER))
+                .toEither()
+                .map(value -> userEntity)
+                .mapLeft(error -> new UserError.FailedToSaveToDatabaseError());
+    }
+
 
     public Either<BaseError, UserEntity> findByEmail(String email) {
         return Try.of(() -> singleResult(jdbcTemplate.query(FETCH_USER_BY_EMAIL, USER_MAPPER, email)))

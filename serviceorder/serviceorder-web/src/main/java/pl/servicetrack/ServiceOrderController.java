@@ -25,27 +25,15 @@ public class ServiceOrderController {
 
     @GetMapping("/serviceorders")
     ResponseEntity<?> fetchServiceOrders() {
-        return serviceOrders.fetchServiceOrders()
-                .fold(
-                        ServiceOrderResponseResolver::resolveError,
-                        response -> ResponseEntity.status(OK).body(
-                                serviceOrderControllerMapper.serviceOrdersToFetchServiceOrdersResponse(response)
-                        )
-                );
+        return serviceOrders.fetchServiceOrders().fold(ServiceOrderResponseResolver::resolveError, response -> ResponseEntity.status(OK).body(
+                                serviceOrderControllerMapper.serviceOrdersToFetchServiceOrdersResponse(response)));
     }
-
     @PostMapping("/serviceorders")
     ResponseEntity<?> createServiceOrder(@Valid @RequestBody CreateServiceOrderRequest createServiceOrderRequest) {
         return serviceOrders.createServiceOrder(
-                        serviceOrderControllerMapper.createRequestBodyToServiceOrder(
-                                createServiceOrderRequest,
-                                LocalDateTime.now()))
-                .fold(
-                        ServiceOrderResponseResolver::resolveError,
-                        response -> ResponseEntity.status(CREATED).body(
-                                serviceOrderControllerMapper.serviceOrderToCreateServiceOrderResponse(response)
-                        )
-                );
+                serviceOrderControllerMapper.createRequestBodyToServiceOrder(createServiceOrderRequest, LocalDateTime.now()))
+                .fold(ServiceOrderResponseResolver::resolveError, response -> ResponseEntity.status(CREATED).body(
+                                serviceOrderControllerMapper.serviceOrderToCreateServiceOrderResponse(response)));
     }
 
     @PutMapping("/serviceorders/{serviceOrderId}")
@@ -61,23 +49,17 @@ public class ServiceOrderController {
                 );
     }
 
+
     @GetMapping("/serviceorders/{serviceOrderId}")
     ResponseEntity<?> fetchServiceOrder(@PathVariable("serviceOrderId") UUID serviceOrderId) {
         return serviceOrders.fetchServiceOrder(serviceOrderId)
-                .fold(
-                        ServiceOrderResponseResolver::resolveError,
-                        response -> ResponseEntity.status(OK).body(
-                                serviceOrderControllerMapper.serviceOrderToFetchServiceOrderResponse(response)
-                        )
-                );
+                .fold(ServiceOrderResponseResolver::resolveError, response -> ResponseEntity.status(OK).body(
+                                serviceOrderControllerMapper.serviceOrderToFetchServiceOrderResponse(response)));
     }
 
     @DeleteMapping("/serviceorders/{serviceOrderId}")
     ResponseEntity<?> deleteServiceOrder(@PathVariable("serviceOrderId") UUID serviceOrderId) {
         return serviceOrders.deleteServiceOrder(serviceOrderId)
-                .fold(
-                        ServiceOrderResponseResolver::resolveError,
-                        success -> ResponseEntity.status(OK).build()
-                );
+                .fold(ServiceOrderResponseResolver::resolveError, success -> ResponseEntity.status(OK).build());
     }
 }

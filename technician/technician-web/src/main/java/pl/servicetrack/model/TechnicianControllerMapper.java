@@ -11,16 +11,11 @@ import java.util.stream.Collectors;
 public interface TechnicianControllerMapper {
 
     TechnicianControllerMapper INSTANCE = Mappers.getMapper(TechnicianControllerMapper.class);
-
     Technician addRequestBodyToTechnician(AddTechnicianRequest addTechnicianRequest);
     Technician updateRequestBodyToTechnician(UpdateTechnicianRequest updateTechnicianRequest, UUID id);
-
     AddTechnicianResponse technicianToAddTechnicianResponse(Technician technician);
-
     FetchTechnicianResponse technicianToFetchTechnicianResponse(Technician technician);
-
     FetchTechniciansResponse.Technician mapToFetchTechnicians(Technician technician);
-
     default FetchTechniciansResponse techniciansToFetchTechniciansResponse(List<Technician> technicians) {
         return new FetchTechniciansResponse(
                 technicians.stream().map(this::mapToFetchTechnicians)

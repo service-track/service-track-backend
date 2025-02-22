@@ -1,11 +1,13 @@
 package pl.servicetrack;
 
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 import pl.servicetrack.model.LoginRequest;
 import pl.servicetrack.model.RegisterRequest;
+import pl.servicetrack.model.UpdateUserRequest;
 import pl.servicetrack.model.UserControllerMapper;
 import pl.servicetrack.security.JwtService;
 import pl.servicetrack.user.facade.Users;
@@ -13,6 +15,7 @@ import pl.servicetrack.user.model.User;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 import static org.springframework.http.HttpStatus.*;
@@ -33,6 +36,7 @@ public class UserController {
 
     @PostMapping("/registration")
     ResponseEntity<?> register(@Valid @RequestBody RegisterRequest registerRequest) {
+
         return users.register(userControllerMapper.registerRequestBodyToUser(
                         registerRequest,
                         UUID.randomUUID(),
@@ -44,11 +48,26 @@ public class UserController {
                                 userControllerMapper.userToRegisterResponse(response)
                         )
                 );
+    }
 
+    @PutMapping("/users/update")
+    ResponseEntity<?> updateUser(@Valid @RequestBody UpdateUserRequest updateUserRequest,
+                                 Principal principal) {
+
+        return users.fetchUserByEmail(principal.getName())
+                .map(user -> users.updateUser(
+                        userControllerMapper.updateRequestBodyToUser(
+                                updateUserRequest, user.id()
+                        )))
+                .fold(
+                        UserResponseSolver::resolveError,
+                        success -> ResponseEntity.status(OK).build()
+                );
     }
 
     @PostMapping("/login")
     ResponseEntity<?> login(@Valid @RequestBody LoginRequest authenticationRequest) {
+
         return users.login(
                         authenticationRequest.email(),
                         authenticationRequest.password(),

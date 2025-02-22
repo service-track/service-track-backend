@@ -22,6 +22,12 @@ public class Clients {
                 .map(response -> client);
     }
 
+    public Either<BaseError, Client> updateClient(Client client) {
+        return clientRepository.update(
+                        clientMapper.clientToClientEntity(client))
+                .map(response -> client);
+    }
+
     public Either<BaseError, List<Client>> fetchClients() {
         return clientRepository.findAll()
                 .map(clientMapper::clientEntitiesToClients);

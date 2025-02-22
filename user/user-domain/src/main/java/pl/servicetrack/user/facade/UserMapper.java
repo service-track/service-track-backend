@@ -9,8 +9,6 @@ import pl.servicetrack.user.model.User;
 public interface UserMapper {
 
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
-
     UserEntity userToUserEntity(User user);
-
     User userEntityToUser(UserEntity userEntity);
 }

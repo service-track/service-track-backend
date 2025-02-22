@@ -18,7 +18,6 @@ public class Technicians {
     public Technicians(TechnicianRepository technicianRepository) {
         this.technicianRepository = technicianRepository;
     }
-
     public Either<BaseError, Technician> addTechnician(Technician technician) {
         return technicianRepository.save(TECHNICIANS_MAPPER.technicianToTechnicianEntity(technician))
                 .map(response -> technician);
@@ -33,16 +32,11 @@ public class Technicians {
         return technicianRepository.findAll()
                 .map(TECHNICIANS_MAPPER::technicianEntitiesToTechnicians);
     }
-
     public Either<BaseError, Technician> fetchTechnician(UUID technicianId) {
         return technicianRepository.find(technicianId)
-                .filterOrElse(
-                        Objects::nonNull,
-                        error -> new TechnicianDomainError.TechnicianNotFound()
-                )
+                .filterOrElse(Objects::nonNull, error -> new TechnicianDomainError.TechnicianNotFound())
                 .map(TECHNICIANS_MAPPER::technicianEntityToTechnician);
     }
-
     public Either<BaseError, UUID> deleteTechnician(UUID technicianId) {
         return technicianRepository.delete(technicianId);
     }

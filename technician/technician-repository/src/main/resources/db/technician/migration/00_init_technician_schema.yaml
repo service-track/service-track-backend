@@ -14,6 +14,12 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
+                  name: user_id
+                  type: uuid
+                  autoIncrement: false
+                  constraints:
+                    nullable: true
+              - column:
                   name: first_name
                   type: text
               - column:

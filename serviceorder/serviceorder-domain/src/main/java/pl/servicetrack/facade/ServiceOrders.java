@@ -18,7 +18,6 @@ public class ServiceOrders {
     public ServiceOrders(ServiceOrderRepository serviceOrderRepository) {
         this.serviceOrderRepository = serviceOrderRepository;
     }
-
     public Either<BaseError, ServiceOrder> createServiceOrder(ServiceOrder serviceOrder) {
         return serviceOrderRepository.save(serviceOrderMapper.serviceOrderToServiceOrderEntity(serviceOrder))
                 .map(response -> serviceOrder);
@@ -33,12 +32,9 @@ public class ServiceOrders {
         return serviceOrderRepository.findAll()
                 .map(serviceOrderMapper::serviceOrderEntitiesToServiceOrders);
     }
-
     public Either<BaseError, ServiceOrder> fetchServiceOrder(UUID serviceOrderId) {
         return serviceOrderRepository.find(serviceOrderId)
-                .filterOrElse(
-                        Objects::nonNull,
-                        error -> new ServiceOrderDomainError.ServiceOrderNotFound())
+                .filterOrElse(Objects::nonNull, error -> new ServiceOrderDomainError.ServiceOrderNotFound())
                 .map(serviceOrderMapper::serviceOrderEntityToServiceOrder);
     }
 
