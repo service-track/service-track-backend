@@ -16,7 +16,7 @@ public class ServiceOrderQuery {
 
     public static final String SAVE_SERVICEORDER = "INSERT INTO %s VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
             .formatted(SERVICEORDER_TABLE);
-
+  
     public static final String UPDATE_SERVICEORDER =
             "UPDATE %s SET %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ? WHERE %s = ?"
             .formatted(SERVICEORDER_TABLE, TECHNICIAN_ID_COLUMN, CLIENT_ID_COLUMN, SERVICE_TYPE_COLUMN,

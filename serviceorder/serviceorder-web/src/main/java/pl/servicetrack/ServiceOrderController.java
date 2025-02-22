@@ -35,13 +35,21 @@ public class ServiceOrderController {
                 .fold(ServiceOrderResponseResolver::resolveError, response -> ResponseEntity.status(CREATED).body(
                                 serviceOrderControllerMapper.serviceOrderToCreateServiceOrderResponse(response)));
     }
+
     @PutMapping("/serviceorders/{serviceOrderId}")
     ResponseEntity<?> updateServiceOrder(@Valid @RequestBody UpdateServiceOrderRequest updateServiceOrderRequest,
                                          @PathVariable("serviceOrderId") UUID serviceOrderId) {
         return serviceOrders.updateServiceOrder(
-                        serviceOrderControllerMapper.updateRequestBodyToServiceOrder(updateServiceOrderRequest, serviceOrderId))
-                .fold(ServiceOrderResponseResolver::resolveError, success -> ResponseEntity.status(OK).build());
+                        serviceOrderControllerMapper.updateRequestBodyToServiceOrder(
+                                updateServiceOrderRequest,
+                                serviceOrderId))
+                .fold(
+                        ServiceOrderResponseResolver::resolveError,
+                        success -> ResponseEntity.status(OK).build()
+                );
     }
+
+
     @GetMapping("/serviceorders/{serviceOrderId}")
     ResponseEntity<?> fetchServiceOrder(@PathVariable("serviceOrderId") UUID serviceOrderId) {
         return serviceOrders.fetchServiceOrder(serviceOrderId)

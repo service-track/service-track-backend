@@ -1,5 +1,7 @@
 package pl.servicetrack;
 
+import io.vavr.control.Either;
+
 public class TechnicianQuery {
     private static final String TECHNICIAN_TABLE = "technician_technician";
     private static final String ID_COLUMN = "id";
