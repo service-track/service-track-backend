@@ -15,6 +15,11 @@ public class UserQuery {
     public static final String SAVE_USER = "INSERT INTO %s VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
             .formatted(USER_TABLE);
 
+    public static final String UPDATE_USER = "UPDATE %s SET %s = ?, %s = ?, %s = ?, %s = ?, %s = ? WHERE %s = ?"
+            .formatted(USER_TABLE, FIRST_NAME_COLUMN, LAST_NAME_COLUMN,
+                    PASSWORD_COLUMN, EMAIL_COLUMN,
+                    PHONE_NUMBER_COLUMN, ID_COLUMN);
+
     public static final String FETCH_USER_BY_USER_ID = "SELECT * FROM %s WHERE %s = ?"
             .formatted(USER_TABLE, ID_COLUMN);
     public static final String FETCH_USER_BY_EMAIL = "SELECT * FROM %s WHERE %s = ?"

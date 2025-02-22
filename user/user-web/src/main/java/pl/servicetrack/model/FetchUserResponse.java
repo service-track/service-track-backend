@@ -1,7 +1,5 @@
 package pl.servicetrack.model;
 
-import pl.servicetrack.user.model.User;
-
 import java.util.UUID;
 
 public record FetchUserResponse(UUID id,

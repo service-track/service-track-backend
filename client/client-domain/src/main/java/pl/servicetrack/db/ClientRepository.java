@@ -10,6 +10,7 @@ import java.util.UUID;
 public interface ClientRepository {
 
     Either<BaseError, ClientEntity> save(ClientEntity clientEntity);
+    Either<BaseError, ClientEntity> update(ClientEntity clientEntity);
     Either<BaseError, List<ClientEntity>> findAll();
     Either<BaseError, ClientEntity> find(UUID clientId);
     Either<BaseError, UUID> delete(UUID clientId);

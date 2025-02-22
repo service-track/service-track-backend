@@ -80,6 +80,7 @@ public class TechnicianJdbcRepository implements TechnicianRepository {
     private Try<Integer> attemptSave(TechnicianEntity technicianEntity) {
         return Try.of(() -> jdbcTemplate.update(SAVE_TECHNICIAN,
                 technicianEntity.id(),
+                technicianEntity.userId(),
                 technicianEntity.firstName(),
                 technicianEntity.lastName(),
                 technicianEntity.email(),

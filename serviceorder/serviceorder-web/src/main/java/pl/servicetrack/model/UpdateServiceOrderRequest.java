@@ -27,7 +27,6 @@ public record UpdateServiceOrderRequest(
         String serviceDescription,
 
         @NotNull
-        @Past
         LocalDateTime dateTimeOfService,
 
         @NotNull

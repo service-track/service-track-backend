@@ -5,12 +5,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import pl.servicetrack.BaseError;
+import pl.servicetrack.security.JwtService;
 import pl.servicetrack.user.db.UserRepository;
 import pl.servicetrack.user.error.UserDomainError;
 import pl.servicetrack.user.model.User;
-import pl.servicetrack.security.JwtService;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -31,6 +30,11 @@ public class Users {
         }
 
         return userRepository.save(USER_MAPPER.userToUserEntity(user), passwordEncoder)
+                .map(response -> user);
+    }
+
+    public Either<BaseError, User> updateUser(User user) {
+        return userRepository.update(USER_MAPPER.userToUserEntity(user), passwordEncoder)
                 .map(response -> user);
     }
 
