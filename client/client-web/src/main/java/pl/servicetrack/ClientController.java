@@ -34,6 +34,7 @@ public class ClientController {
                         clientControllerMapper.clientToAddClientResponse(response)));
     }
 
+
     @PutMapping("/clients/{clientId}")
     ResponseEntity<?> updateClient(@Valid @RequestBody UpdateClientRequest updateClientRequest,
                                    @PathVariable("clientId") UUID clientId) {
