@@ -26,7 +26,6 @@ public record CreateServiceOrderRequest(
         String serviceDescription,
 
         @NotNull
-        @Future
         LocalDateTime dateTimeOfService,
 
         @NotNull
